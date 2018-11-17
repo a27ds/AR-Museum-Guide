@@ -17,6 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // Set the view's delegate
         sceneView.delegate = self
         
@@ -24,6 +25,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         sceneView.autoenablesDefaultLighting = true
+        
         
     }
     
@@ -53,32 +55,51 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
+        // added a white plane with 0.5 in alpha to see that imageTracking is working
         if let imageAnchor = anchor as? ARImageAnchor {
-            let plane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
-            plane.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.5)
-            let planeNode = SCNNode(geometry: plane)
-            planeNode.eulerAngles.x = -.pi / 2
+            let artPlane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
+            artPlane.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.0)
+            let artPlaneNode = SCNNode(geometry: artPlane)
+            // Change the eulerAngle on the artPlaneNode because it's otherwise standing up on the picture.
+            // so the change is on x and I using the .pi (180°) but half that and negative to get it to rotate 90° on the x ax.
+            artPlaneNode.eulerAngles.x = -.pi / 2
+            artPlaneNode.name = "artPlane"
             
-            if let pokeScene = SCNScene(named: "art.scnassets/stratocaster.scn") {
-                if let pokeNode = pokeScene.rootNode.childNodes.first {
-                    pokeNode.eulerAngles.x = .pi / 2
-                    planeNode.addChildNode(pokeNode)
-                }
-            }
-            node.addChildNode(planeNode)
-            
-            //            let planeUp = SCNPlane(width: 0.1, height: 0.1)
-            //            planeUp.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 1.0)
-            //            let planeUpNode = SCNNode(geometry: planeUp)
-            //            planeUpNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(-planeUp.height / 2) // top position
-            //            planeUpNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(planeUp.height / 2) // bottom position
-            //            planeUpNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-planeUp.width / 2) // left position
-            //            planeUpNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + Float(planeUp.width / 2) + 0.005 // right position
-            //            planeUpNode.eulerAngles.x = -.pi / 2
-            //            node.addChildNode(planeUpNode)
-            
+            let audioPlane = SCNPlane(width: 0.1, height: 0.1)
+            audioPlane.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 1.0)
+            let audioPlaneNode = SCNNode(geometry: audioPlane)
+            audioPlaneNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(-audioPlane.height / 2) // top position
+            //                        audioPlaneNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
+            //                        audioPlaneNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-audioPlane.width / 2) // left position
+            //                        audioPlaneNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + Float(audioPlane.width / 2) + 0.005 // right position
+            audioPlaneNode.eulerAngles.x = -.pi / 2
+            audioPlaneNode.name = "audioPlane"
+            node.addChildNode(audioPlaneNode)
+            node.addChildNode(artPlaneNode)
             
         }
         return node
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let currentTouchLocation = touches.first?.location(in: self.sceneView),
+            let hitTestNode = self.sceneView.hitTest(currentTouchLocation, options: nil).first?.node else { return }
+        
+        if let artID = hitTestNode.name {
+            switch (artID) {
+                
+            case "artPlane":
+                print("bajs")
+                break
+                
+            case "audioPlane":
+                print("audioPlane")
+                break
+                
+            default:
+                break
+            }
+        }
+    }
+    
 }
