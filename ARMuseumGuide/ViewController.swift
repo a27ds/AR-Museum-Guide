@@ -65,8 +65,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             artPlaneNode.eulerAngles.x = -.pi / 2
             artPlaneNode.name = "artPlane"
             
+            
+            
             let audioPlane = SCNPlane(width: 0.1, height: 0.1)
-            audioPlane.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 1.0)
+            // add image to audio plane
+            if let image = UIImage(named: "play-button") {
+                audioPlane.firstMaterial?.diffuse.contents = image
+            }
+            
             let audioPlaneNode = SCNNode(geometry: audioPlane)
             audioPlaneNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(-audioPlane.height / 2) // top position
             //                        audioPlaneNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
@@ -74,9 +80,34 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //                        audioPlaneNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + Float(audioPlane.width / 2) + 0.005 // right position
             audioPlaneNode.eulerAngles.x = -.pi / 2
             audioPlaneNode.name = "audioPlane"
+            
+            
+            
+            let text = SCNText(string: "Van Ghog", extrusionDepth: 0.1)
+            text.font = UIFont(name: "HelveticaNeue-Thin", size: 60)
+            
+            //Create material
+            let material = SCNMaterial()
+            material.diffuse.contents = UIColor.white
+            text.materials = [material]
+            
+            //Create Node object
+            let textNode = SCNNode()
+            textNode.scale = SCNVector3(x:0.001, y:0.001, z: 0.001)
+            textNode.geometry = text
+            
+            // Center the text by changingn the pivit point in the text nodes
+            let (minVec, maxVec) = textNode.boundingBox
+            textNode.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
+
+            textNode.eulerAngles.x = -.pi / 2
+            textNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
+            
+            textNode.name = "Text"
+            
             node.addChildNode(audioPlaneNode)
             node.addChildNode(artPlaneNode)
-            
+            node.addChildNode(textNode)
         }
         return node
     }
@@ -94,6 +125,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
             case "audioPlane":
                 print("audioPlane")
+                break
+                
+            case "Text":
+                print("text")
                 break
                 
             default:
