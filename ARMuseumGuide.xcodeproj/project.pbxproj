@@ -13,6 +13,7 @@
 		F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D42189D95C00418AE1 /* Main.storyboard */; };
 		F35C53D82189D95D00418AE1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D72189D95D00418AE1 /* Assets.xcassets */; };
 		F35C53DB2189D95D00418AE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D92189D95D00418AE1 /* LaunchScreen.storyboard */; };
+		F3D4942621A01BDB00F017A8 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F3D4942521A01BDB00F017A8 /* art.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		F35C53D72189D95D00418AE1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F35C53DA2189D95D00418AE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F35C53DC2189D95D00418AE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F3D4942521A01BDB00F017A8 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				F35C53D02189D95C00418AE1 /* AppDelegate.swift */,
+				F3D4942521A01BDB00F017A8 /* art.scnassets */,
 				F35C53D22189D95C00418AE1 /* ViewController.swift */,
 				F35C53D42189D95C00418AE1 /* Main.storyboard */,
 				F35C53D72189D95D00418AE1 /* Assets.xcassets */,
@@ -127,6 +130,7 @@
 			files = (
 				F35C53DB2189D95D00418AE1 /* LaunchScreen.storyboard in Resources */,
 				F35C53D82189D95D00418AE1 /* Assets.xcassets in Resources */,
+				F3D4942621A01BDB00F017A8 /* art.scnassets in Resources */,
 				F3225C272189F296004C20F2 /* README.md in Resources */,
 				F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */,
 			);
