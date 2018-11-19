@@ -23,7 +23,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
-        
         sceneView.autoenablesDefaultLighting = true
         
         
@@ -51,65 +50,75 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     // MARK: - ARSCNViewDelegate
-    
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         let node = SCNNode()
         
         // added a white plane with 0.5 in alpha to see that imageTracking is working
         if let imageAnchor = anchor as? ARImageAnchor {
-            let artPlane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
-            artPlane.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.0)
-            let artPlaneNode = SCNNode(geometry: artPlane)
-            // Change the eulerAngle on the artPlaneNode because it's otherwise standing up on the picture.
-            // so the change is on x and I using the .pi (180°) but half that and negative to get it to rotate 90° on the x ax.
-            artPlaneNode.eulerAngles.x = -.pi / 2
-            artPlaneNode.name = "artPlane"
-            
-            
-            
-            let audioPlane = SCNPlane(width: 0.1, height: 0.1)
-            // add image to audio plane
-            if let image = UIImage(named: "play-button") {
-                audioPlane.firstMaterial?.diffuse.contents = image
-            }
-            
-            let audioPlaneNode = SCNNode(geometry: audioPlane)
-            audioPlaneNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(-audioPlane.height / 2) // top position
-            //                        audioPlaneNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
-            //                        audioPlaneNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-audioPlane.width / 2) // left position
-            //                        audioPlaneNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + Float(audioPlane.width / 2) + 0.005 // right position
-            audioPlaneNode.eulerAngles.x = -.pi / 2
-            audioPlaneNode.name = "audioPlane"
-            
-            
-            
-            let text = SCNText(string: "Van Ghog", extrusionDepth: 0.1)
-            text.font = UIFont(name: "HelveticaNeue-Thin", size: 60)
-            
-            //Create material
-            let material = SCNMaterial()
-            material.diffuse.contents = UIColor.white
-            text.materials = [material]
-            
-            //Create Node object
-            let textNode = SCNNode()
-            textNode.scale = SCNVector3(x:0.001, y:0.001, z: 0.001)
-            textNode.geometry = text
-            
-            // Center the text by changingn the pivit point in the text nodes
-            let (minVec, maxVec) = textNode.boundingBox
-            textNode.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
-
-            textNode.eulerAngles.x = -.pi / 2
-            textNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
-            
-            textNode.name = "Text"
-            
-            node.addChildNode(audioPlaneNode)
-            node.addChildNode(artPlaneNode)
-            node.addChildNode(textNode)
+            node.addChildNode(createArtNode(imageAnchor: imageAnchor))
+            node.addChildNode(createAudioNode(imageAnchor: imageAnchor))
+            node.addChildNode(createTextNode(imageAnchor: imageAnchor))
         }
         return node
+    }
+    
+    func createArtNode(imageAnchor: ARImageAnchor) -> SCNNode {
+        let artPlane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
+        artPlane.firstMaterial?.diffuse.contents = UIColor(white: 1.0, alpha: 0.0)
+        let artPlaneNode = SCNNode(geometry: artPlane)
+        // Change the eulerAngle on the artPlaneNode because it's otherwise standing up on the picture.
+        // so the change is on x and I using the .pi (180°) but half that and negative to get it to rotate 90° on the x ax.
+        artPlaneNode.eulerAngles.x = -.pi / 2
+        artPlaneNode.name = "artPlane"
+        return artPlaneNode
+    }
+    
+    func createAudioNode(imageAnchor: ARImageAnchor) -> SCNNode {
+        let audioPlane = SCNPlane(width: 0.1, height: 0.1)
+        // add image to audio plane
+        if let image = UIImage(named: "play-button") {
+            audioPlane.firstMaterial?.diffuse.contents = image
+        }
+        let audioNode = SCNNode(geometry: audioPlane)
+        audioNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(-audioPlane.height / 2) // top position
+        //                        audioPlaneNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
+        //                        audioPlaneNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-audioPlane.width / 2) // left position
+        //                        audioPlaneNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + Float(audioPlane.width / 2) + 0.005 // right position
+        audioNode.eulerAngles.x = -.pi / 2
+        audioNode.name = "audioPlane"
+        print("audio:\(audioPlane.height)")
+        return audioNode
+    }
+    
+    func createTextNode(imageAnchor: ARImageAnchor) -> SCNNode {
+        let text = SCNText(string: "Van Ghog", extrusionDepth: 0.1)
+        text.font = UIFont(name: "HelveticaNeue-Thin", size: 60)
+        
+        //Create material
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.white
+        text.materials = [material]
+        
+        //Create Node object
+        let textNode = SCNNode()
+        textNode.scale = SCNVector3(x:0.001, y:0.001, z: 0.001)
+        textNode.geometry = text
+        
+        // Center the text by changingn the pivit point in the text nodes
+        let (minVec, maxVec) = textNode.boundingBox
+        textNode.pivot = SCNMatrix4MakeTranslation((maxVec.x - minVec.x) / 2 + minVec.x, (maxVec.y - minVec.y) / 2 + minVec.y, 0)
+        
+        textNode.eulerAngles.x = -.pi / 2
+        
+        // get the height and halfvalue of text
+        let textHeight = Float(text.boundingBox.min.y)
+        let roundedTextHeight = textHeight.rounded(.toNearestOrEven)
+        let decimalMoveOnTextHeight = roundedTextHeight / 10
+        
+        textNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + decimalMoveOnTextHeight
+        
+        textNode.name = "Text"
+        return textNode
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
