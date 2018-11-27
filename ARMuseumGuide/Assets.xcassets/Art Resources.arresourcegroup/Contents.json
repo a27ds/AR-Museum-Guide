@@ -5,7 +5,13 @@
   },
   "resources" : [
     {
-      "filename" : "VanGogh-starry_night_ballance1.arreferenceimage"
+      "filename" : "pizza.arreferenceimage"
+    },
+    {
+      "filename" : "starry_night.arreferenceimage"
+    },
+    {
+      "filename" : "The_Scream.arreferenceimage"
     }
   ]
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>758205518465-1iiu4o7vf8f1ldu9lhfvmqdqpih9c3db.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.758205518465-1iiu4o7vf8f1ldu9lhfvmqdqpih9c3db</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAqDWPkwRdAghINlwb9iJO-ZMjlyl4Z-7M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>758205518465</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>se.27differentsounds.ARMuseumGuide</string>
+	<key>PROJECT_ID</key>
+	<string>ar-museum-guide</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ar-museum-guide.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:758205518465:ios:673516e2cf7b4e86</string>
+	<key>DATABASE_URL</key>
+	<string>https://ar-museum-guide.firebaseio.com</string>
+</dict>
+</plist>

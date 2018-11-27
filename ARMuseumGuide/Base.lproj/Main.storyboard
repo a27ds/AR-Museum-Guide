@@ -20,11 +20,9 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZwW-aJ-qfL">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </arscnView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qKW-Yb-83E">
-                                <rect key="frame" x="0.0" y="696" width="414" height="200"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="1Eu-OF-TCt"/>
-                                </constraints>
+                            <containerView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qKW-Yb-83E">
+                                <rect key="frame" x="0.0" y="721" width="414" height="175"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <connections>
                                     <segue destination="cIh-x3-ie5" kind="embed" id="fMf-ce-BtU"/>
                                 </connections>
@@ -32,17 +30,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="qKW-Yb-83E" secondAttribute="bottom" id="8l2-0e-Nl3"/>
                             <constraint firstAttribute="bottom" secondItem="ZwW-aJ-qfL" secondAttribute="bottom" id="CLd-6t-J2b"/>
-                            <constraint firstItem="qKW-Yb-83E" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="PQs-j2-uXE"/>
                             <constraint firstItem="ZwW-aJ-qfL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fW3-uQ-laZ"/>
                             <constraint firstAttribute="trailing" secondItem="ZwW-aJ-qfL" secondAttribute="trailing" id="m1M-Az-wHE"/>
                             <constraint firstItem="ZwW-aJ-qfL" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="uz5-Gv-3lB"/>
-                            <constraint firstAttribute="trailing" secondItem="qKW-Yb-83E" secondAttribute="trailing" id="xw7-z6-aRM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="menuView" destination="qKW-Yb-83E" id="zZ2-e8-wiH"/>
                         <outlet property="sceneView" destination="ZwW-aJ-qfL" id="Y1c-sW-Ecl"/>
                     </connections>
                 </viewController>
@@ -55,9 +51,10 @@
             <objects>
                 <viewController id="cIh-x3-ie5" customClass="MenuViewController" customModule="ARMuseumGuide" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wox-NU-CTz">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="175"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="VvD-nK-J0p"/>
                     </view>
                     <connections>
                         <outlet property="MenuView" destination="wox-NU-CTz" id="tQw-Nu-8ey"/>

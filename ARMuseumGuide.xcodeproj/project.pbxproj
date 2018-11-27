@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		F3225C272189F296004C20F2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F3225C262189F296004C20F2 /* README.md */; };
+		F34679D121A55DAC00A5CBF7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F34679D021A55DAC00A5CBF7 /* GoogleService-Info.plist */; };
 		F35C53D12189D95C00418AE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35C53D02189D95C00418AE1 /* AppDelegate.swift */; };
 		F35C53D32189D95C00418AE1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35C53D22189D95C00418AE1 /* ViewController.swift */; };
 		F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D42189D95C00418AE1 /* Main.storyboard */; };
@@ -15,10 +16,15 @@
 		F360172C21A2D44600962B81 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F360172B21A2D44600962B81 /* MenuViewController.swift */; };
 		F3D4942621A01BDB00F017A8 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F3D4942521A01BDB00F017A8 /* art.scnassets */; };
 		F3D4942A21A03F0800F017A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3D4942921A03F0800F017A8 /* Assets.xcassets */; };
+		F7F5FDC5763C53DE36940648 /* Pods_ARMuseumGuide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37906AA0AAB5B537D3BD495C /* Pods_ARMuseumGuide.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		37906AA0AAB5B537D3BD495C /* Pods_ARMuseumGuide.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ARMuseumGuide.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		53D8167090596FC6BEDB61F2 /* Pods-ARMuseumGuide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARMuseumGuide.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ARMuseumGuide/Pods-ARMuseumGuide.debug.xcconfig"; sourceTree = "<group>"; };
+		AD37EB98E164A4F1EBA2C43D /* Pods-ARMuseumGuide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ARMuseumGuide.release.xcconfig"; path = "Pods/Target Support Files/Pods-ARMuseumGuide/Pods-ARMuseumGuide.release.xcconfig"; sourceTree = "<group>"; };
 		F3225C262189F296004C20F2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F34679D021A55DAC00A5CBF7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F35C53CD2189D95C00418AE1 /* ARMuseumGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARMuseumGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F35C53D02189D95C00418AE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F35C53D22189D95C00418AE1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,18 +41,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F7F5FDC5763C53DE36940648 /* Pods_ARMuseumGuide.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C25CBBD08C12CFAEFB90F5E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				53D8167090596FC6BEDB61F2 /* Pods-ARMuseumGuide.debug.xcconfig */,
+				AD37EB98E164A4F1EBA2C43D /* Pods-ARMuseumGuide.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		F35C53C42189D95C00418AE1 = {
 			isa = PBXGroup;
 			children = (
 				F3225C262189F296004C20F2 /* README.md */,
 				F35C53CF2189D95C00418AE1 /* ARMuseumGuide */,
 				F35C53CE2189D95C00418AE1 /* Products */,
+				5C25CBBD08C12CFAEFB90F5E /* Pods */,
+				FB8052E235B24739BB207EE7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,8 +87,17 @@
 				F35C53D42189D95C00418AE1 /* Main.storyboard */,
 				F35C53D92189D95D00418AE1 /* LaunchScreen.storyboard */,
 				F35C53DC2189D95D00418AE1 /* Info.plist */,
+				F34679D021A55DAC00A5CBF7 /* GoogleService-Info.plist */,
 			);
 			path = ARMuseumGuide;
+			sourceTree = "<group>";
+		};
+		FB8052E235B24739BB207EE7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				37906AA0AAB5B537D3BD495C /* Pods_ARMuseumGuide.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -80,9 +107,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F35C53DF2189D95D00418AE1 /* Build configuration list for PBXNativeTarget "ARMuseumGuide" */;
 			buildPhases = (
+				642F6C130C21C4219FC065D7 /* [CP] Check Pods Manifest.lock */,
 				F35C53C92189D95C00418AE1 /* Sources */,
 				F35C53CA2189D95C00418AE1 /* Frameworks */,
 				F35C53CB2189D95C00418AE1 /* Resources */,
+				57AB964489D7D92DC68F202A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,10 +165,68 @@
 				F3225C272189F296004C20F2 /* README.md in Resources */,
 				F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */,
 				F3D4942A21A03F0800F017A8 /* Assets.xcassets in Resources */,
+				F34679D121A55DAC00A5CBF7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		57AB964489D7D92DC68F202A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ARMuseumGuide/Pods-ARMuseumGuide-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ARMuseumGuide/Pods-ARMuseumGuide-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		642F6C130C21C4219FC065D7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ARMuseumGuide-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F35C53C92189D95C00418AE1 /* Sources */ = {
@@ -292,15 +379,13 @@
 		};
 		F35C53E02189D95D00418AE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53D8167090596FC6BEDB61F2 /* Pods-ARMuseumGuide.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7JKA6624L;
 				INFOPLIST_FILE = ARMuseumGuide/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.27differentsounds.ARMuseumGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -310,15 +395,13 @@
 		};
 		F35C53E12189D95D00418AE1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AD37EB98E164A4F1EBA2C43D /* Pods-ARMuseumGuide.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7JKA6624L;
 				INFOPLIST_FILE = ARMuseumGuide/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.27differentsounds.ARMuseumGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;

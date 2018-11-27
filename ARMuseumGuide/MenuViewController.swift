@@ -11,19 +11,14 @@ import UIKit
 class MenuViewController: UIViewController {
     
     @IBOutlet var MenuView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutMenuView()
-        
-        
-        
     }
     
     func layoutMenuView() {
-        let path = UIBezierPath(ovalIn: CGRect(x: MenuView.frame.size.width/2 - MenuView.frame.size.height/2,
-                                               y: 0.0,
-                                               width: MenuView.frame.size.height,
-                                               height: MenuView.frame.size.height))
+        let path = UIBezierPath(ovalIn: CGRect(x: MenuView.frame.size.width/2 - MenuView.frame.size.height/2, y: 0.0, width:                MenuView.frame.size.height, height: MenuView.frame.size.height))
         let maskLayer = CAShapeLayer()
         maskLayer.path = path.cgPath
         MenuView.layer.mask = maskLayer
