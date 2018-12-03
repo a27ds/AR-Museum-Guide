@@ -14,6 +14,8 @@
 		F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D42189D95C00418AE1 /* Main.storyboard */; };
 		F35C53DB2189D95D00418AE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D92189D95D00418AE1 /* LaunchScreen.storyboard */; };
 		F360172C21A2D44600962B81 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F360172B21A2D44600962B81 /* MenuViewController.swift */; };
+		F3C4FEE721B1431000507E9A /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C4FEE621B1431000507E9A /* Art.swift */; };
+		F3C4FEE921B1766D00507E9A /* Paintings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C4FEE821B1766D00507E9A /* Paintings.swift */; };
 		F3D4942621A01BDB00F017A8 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F3D4942521A01BDB00F017A8 /* art.scnassets */; };
 		F3D4942A21A03F0800F017A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3D4942921A03F0800F017A8 /* Assets.xcassets */; };
 		F7F5FDC5763C53DE36940648 /* Pods_ARMuseumGuide.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37906AA0AAB5B537D3BD495C /* Pods_ARMuseumGuide.framework */; };
@@ -32,6 +34,8 @@
 		F35C53DA2189D95D00418AE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F35C53DC2189D95D00418AE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F360172B21A2D44600962B81 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		F3C4FEE621B1431000507E9A /* Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Art.swift; sourceTree = "<group>"; };
+		F3C4FEE821B1766D00507E9A /* Paintings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paintings.swift; sourceTree = "<group>"; };
 		F3D4942521A01BDB00F017A8 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		F3D4942921A03F0800F017A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,17 +83,43 @@
 		F35C53CF2189D95C00418AE1 /* ARMuseumGuide */ = {
 			isa = PBXGroup;
 			children = (
-				F35C53D02189D95C00418AE1 /* AppDelegate.swift */,
-				F35C53D22189D95C00418AE1 /* ViewController.swift */,
-				F360172B21A2D44600962B81 /* MenuViewController.swift */,
+				F3C4FEE121B1429700507E9A /* Model */,
+				F3C4FEE221B142A200507E9A /* View */,
+				F3C4FEE321B142AC00507E9A /* Controller */,
 				F3D4942521A01BDB00F017A8 /* art.scnassets */,
 				F3D4942921A03F0800F017A8 /* Assets.xcassets */,
-				F35C53D42189D95C00418AE1 /* Main.storyboard */,
-				F35C53D92189D95D00418AE1 /* LaunchScreen.storyboard */,
 				F35C53DC2189D95D00418AE1 /* Info.plist */,
 				F34679D021A55DAC00A5CBF7 /* GoogleService-Info.plist */,
 			);
 			path = ARMuseumGuide;
+			sourceTree = "<group>";
+		};
+		F3C4FEE121B1429700507E9A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F35C53D02189D95C00418AE1 /* AppDelegate.swift */,
+				F3C4FEE621B1431000507E9A /* Art.swift */,
+				F3C4FEE821B1766D00507E9A /* Paintings.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F3C4FEE221B142A200507E9A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F35C53D42189D95C00418AE1 /* Main.storyboard */,
+				F35C53D92189D95D00418AE1 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3C4FEE321B142AC00507E9A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F35C53D22189D95C00418AE1 /* ViewController.swift */,
+				F360172B21A2D44600962B81 /* MenuViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		FB8052E235B24739BB207EE7 /* Frameworks */ = {
@@ -179,6 +209,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-ARMuseumGuide/Pods-ARMuseumGuide-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -192,6 +223,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -236,6 +268,8 @@
 				F35C53D32189D95C00418AE1 /* ViewController.swift in Sources */,
 				F360172C21A2D44600962B81 /* MenuViewController.swift in Sources */,
 				F35C53D12189D95C00418AE1 /* AppDelegate.swift in Sources */,
+				F3C4FEE721B1431000507E9A /* Art.swift in Sources */,
+				F3C4FEE921B1766D00507E9A /* Paintings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,7 +419,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7JKA6624L;
 				INFOPLIST_FILE = ARMuseumGuide/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.27differentsounds.ARMuseumGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -401,7 +438,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7JKA6624L;
 				INFOPLIST_FILE = ARMuseumGuide/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.27differentsounds.ARMuseumGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
