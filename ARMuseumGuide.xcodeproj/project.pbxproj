@@ -13,7 +13,7 @@
 		F35C53D32189D95C00418AE1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35C53D22189D95C00418AE1 /* ViewController.swift */; };
 		F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D42189D95C00418AE1 /* Main.storyboard */; };
 		F35C53DB2189D95D00418AE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D92189D95D00418AE1 /* LaunchScreen.storyboard */; };
-		F360172C21A2D44600962B81 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F360172B21A2D44600962B81 /* InfoViewController.swift */; };
+		F360172C21A2D44600962B81 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F360172B21A2D44600962B81 /* MenuViewController.swift */; };
 		F3C4FEE721B1431000507E9A /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C4FEE621B1431000507E9A /* Art.swift */; };
 		F3C4FEE921B1766D00507E9A /* Paintings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C4FEE821B1766D00507E9A /* Paintings.swift */; };
 		F3D4942621A01BDB00F017A8 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = F3D4942521A01BDB00F017A8 /* art.scnassets */; };
@@ -33,7 +33,7 @@
 		F35C53D52189D95C00418AE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F35C53DA2189D95D00418AE1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F35C53DC2189D95D00418AE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F360172B21A2D44600962B81 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		F360172B21A2D44600962B81 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		F3C4FEE621B1431000507E9A /* Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Art.swift; sourceTree = "<group>"; };
 		F3C4FEE821B1766D00507E9A /* Paintings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paintings.swift; sourceTree = "<group>"; };
 		F3D4942521A01BDB00F017A8 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -117,7 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				F35C53D22189D95C00418AE1 /* ViewController.swift */,
-				F360172B21A2D44600962B81 /* InfoViewController.swift */,
+				F360172B21A2D44600962B81 /* MenuViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -268,7 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F35C53D32189D95C00418AE1 /* ViewController.swift in Sources */,
-				F360172C21A2D44600962B81 /* InfoViewController.swift in Sources */,
+				F360172C21A2D44600962B81 /* MenuViewController.swift in Sources */,
 				F35C53D12189D95C00418AE1 /* AppDelegate.swift in Sources */,
 				F3C4FEE721B1431000507E9A /* Art.swift in Sources */,
 				F3C4FEE921B1766D00507E9A /* Paintings.swift in Sources */,
@@ -421,10 +421,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7JKA6624L;
 				INFOPLIST_FILE = ARMuseumGuide/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.27differentsounds.ARMuseumGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -440,10 +437,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G7JKA6624L;
 				INFOPLIST_FILE = ARMuseumGuide/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = se.27differentsounds.ARMuseumGuide;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
