@@ -16,19 +16,35 @@ import Alamofire
 class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet weak var infoViewBottom: NSLayoutConstraint!
+    @IBOutlet var mainView: UIView!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var infoViewHeight: NSLayoutConstraint!
+    
     let impact = UINotificationFeedbackGenerator()
-    // Create a session configuration
     let configuration = ARImageTrackingConfiguration()
-    let paintings = Paintings()
+    let screenRect = UIScreen.main.bounds
+    var screenWidth: CGFloat = 0.0
+    var screenHeight: CGFloat = 0.0
+    var infoVCHidden: Bool = true
+    public static let paintings = Paintings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        infoViewHeight.constant = screenHeight / 1.3
+        infoViewBottom.constant = -(screenHeight / 1.3)
+        
+        
         // Set the view's delegate
         sceneView.delegate = self
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         sceneView.autoenablesDefaultLighting = true
+        
+        screenWidth = screenRect.size.width
+        screenHeight = screenRect.size.height
+        
+//        showOrHideInfoVC()
         
         getInfoFromFirebase {
             self.downloadphotos(completion: self.setAR)
@@ -39,7 +55,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let db = Database.database().reference().child("exhibitions").child("art")
         db.observe(.value) { (snapshot) in
             for child in snapshot.children.allObjects as! [DataSnapshot]{
-                self.paintings.artList.append(Art(snapshot: child))
+                ViewController.paintings.artList.append(Art(snapshot: child))
             }
             completion()
         }
@@ -49,7 +65,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         DispatchQueue.global(qos: .userInitiated).async {
             let downloadGroup = DispatchGroup()
             
-            for art in self.paintings.artList {
+            for art in ViewController.paintings.artList {
                 downloadGroup.enter()
                 let destination: DownloadRequest.DownloadFileDestination = { _, _ in
                     let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -58,7 +74,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 }
                 Alamofire.download(art.imageUrl, to: destination).response { response in
                     if response.error == nil, let imagePath = response.destinationURL?.path {
-                        self.paintings.UIImageToArImage(imagePath: imagePath, imageName: art.paintingName, imageWidth: art.width)
+                        ViewController.paintings.UIImageToArImage(imagePath: imagePath, imageName: art.paintingName, imageWidth: art.width)
                         downloadGroup.leave()
                     }
                 }
@@ -71,7 +87,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func setAR() {
-        configuration.trackingImages = paintings.arPaintingList
+        configuration.trackingImages = ViewController.paintings.arPaintingList
         self.configuration.maximumNumberOfTrackedImages = 2
         print("Images Successfully Added")
         self.sceneView.session.run(self.configuration)
@@ -115,7 +131,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func createChildNodesToTheArt(node: SCNNode, imageAnchor: ARImageAnchor) -> SCNNode {
-        for art in paintings.artList {
+        for art in ViewController.paintings.artList {
             if (art.paintingName == imageAnchor.referenceImage.name) {
                 
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
@@ -234,6 +250,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         node.eulerAngles.x = -.pi / 2
     }
     
+    func showOrHideInfoVC() {
+        if (infoVCHidden) {
+            infoViewBottom.constant = screenHeight / 1.3
+            
+            infoVCHidden = false
+            mainView.isUserInteractionEnabled = false
+        } else {
+            infoViewBottom.constant = -(screenHeight / 1.3)
+            infoVCHidden = true
+            mainView.isUserInteractionEnabled = true
+        }
+        
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let currentTouchLocation = touches.first?.location(in: self.sceneView),
             let hitTestNode = self.sceneView.hitTest(currentTouchLocation, options: nil).first?.node else { return }
@@ -252,6 +282,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
             case "infoPlane":
                 print("infoPlane")
+                showOrHideInfoVC()
                 break
                 
             default:
