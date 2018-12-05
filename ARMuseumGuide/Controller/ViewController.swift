@@ -185,6 +185,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         infoNode.eulerAngles.x = -.pi / 2
         infoNode.name = "infoPlane"
         return infoNode
+        //blablablaç
     }
     
     func createTextNode(imageAnchor: ARImageAnchor, artist: String, paintingName: String, scale: Float) -> SCNNode {
