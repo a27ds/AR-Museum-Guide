@@ -120,6 +120,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
                 node.addChildNode(createTextNode(imageAnchor: imageAnchor, artist: art.artistName, paintingName: art.paintingName, scale: 0.001))
+                node.addChildNode(createInfoNode(imageAnchor: imageAnchor, scale: 0.1))
                 if (!art.audioUrl.isEmpty) {
                     node.addChildNode(createAudioNode(imageAnchor: imageAnchor, scale: 0.1))
                 }
@@ -168,12 +169,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         let audioNode = SCNNode(geometry: audioPlane)
         audioNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + (Float(-audioPlane.height / 2) * 2) // top position
-        //                        audioPlaneNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) + Float(audioPlane.height / 2) // bottom position
         //                        audioPlaneNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-audioPlane.width / 2) // left position
-        //                        audioPlaneNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + Float(audioPlane.width / 2) + 0.005 // right position
         audioNode.eulerAngles.x = -.pi / 2
         audioNode.name = "audioPlane"
         return audioNode
+    }
+    
+    func createInfoNode(imageAnchor: ARImageAnchor, scale: CGFloat) -> SCNNode {
+        let infoPlane = SCNPlane(width: scale, height: scale)
+        if let image = UIImage(named: "information-button") {
+            infoPlane.firstMaterial?.diffuse.contents = image
+        }
+        let infoNode = SCNNode(geometry: infoPlane)
+        infoNode.position.x = Float(imageAnchor.referenceImage.physicalSize.width / 2) + (Float(infoPlane.width / 2) * 2) // right position
+        infoNode.eulerAngles.x = -.pi / 2
+        infoNode.name = "infoPlane"
+        return infoNode
     }
     
     func createTextNode(imageAnchor: ARImageAnchor, artist: String, paintingName: String, scale: Float) -> SCNNode {
@@ -204,7 +215,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         centerTextAndFixAngles(node: paintingNameTextNode)
         
         // set the height and halfvalue of text
-        artistTextNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) - ((artistText.boundingBox.min.z / 2) * 2)
+        artistTextNode.position.z = Float(imageAnchor.referenceImage.physicalSize.height / 2) - ((artistText.boundingBox.min.z / 2) * 2) // bottom position
         artistTextNode.name = "Text"
         
         paintingNameTextNode.position = SCNVector3Make(0, 0, artistTextNode.position.z - ((artistText.boundingBox.min.z / 2) * 3))
@@ -231,7 +242,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             switch (artID) {
                 
             case "artPlane":
-                print("bajs")
+                print("artPlane")
                 break
                 
             case "audioPlane":
@@ -239,8 +250,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 textToSpeech()
                 break
                 
-            case "Text":
-                print("text")
+            case "infoPlane":
+                print("infoPlane")
                 break
                 
             default:
