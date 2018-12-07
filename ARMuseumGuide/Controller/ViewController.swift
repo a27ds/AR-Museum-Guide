@@ -17,21 +17,60 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var infoViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var closeButton: UIImageView!
+    //    @IBOutlet weak var infoView: UIView!
     let impact = UINotificationFeedbackGenerator()
     // Create a session configuration
     let configuration = ARImageTrackingConfiguration()
     let paintings = Paintings()
+    let screenSize = UIScreen.main.bounds
+    var isInfoViewHidden = true
+    var referenceImageName = ""
+    var node = SCNNode()
+    
+     @objc func closeButtonTapped(gesture: UIGestureRecognizer) {
+        if (gesture.view as? UIImageView) != nil {
+            hideOrShowInfoView()
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        globalInfoViewController?.setTextInInfoView(paintingName: "", artistName: "", infoText: "")
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped(gesture:)))
+        closeButton.addGestureRecognizer(tapGesture)
+        closeButton.isUserInteractionEnabled = true
+        infoViewHeight.constant = screenSize.height * 0.1
+        closeButton.alpha = 0.0
         // Set the view's delegate
         sceneView.delegate = self
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
         sceneView.autoenablesDefaultLighting = true
         
         getInfoFromFirebase {
             self.downloadphotos(completion: self.setAR)
+        }
+    }
+    
+    func hideOrShowInfoView() {
+        if (isInfoViewHidden) {
+            isInfoViewHidden = false
+            infoViewHeight.constant = screenSize.height * 0.7
+            globalInfoViewController?.hideOrShowInfoText()
+            UIView.animate(withDuration: 0.5) {
+                self.closeButton.alpha = 1.0
+                self.view.layoutIfNeeded()
+            }
+            
+        } else {
+            isInfoViewHidden = true
+            infoViewHeight.constant = screenSize.height * 0.1
+            globalInfoViewController?.hideOrShowInfoText()
+            UIView.animate(withDuration: 0.5) {
+                self.closeButton.alpha = 0.0
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
@@ -72,7 +111,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func setAR() {
         configuration.trackingImages = paintings.arPaintingList
-        self.configuration.maximumNumberOfTrackedImages = 2
+        self.configuration.maximumNumberOfTrackedImages = 1
         print("Images Successfully Added")
         self.sceneView.session.run(self.configuration)
     }
@@ -106,7 +145,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - ARSCNViewDelegate
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        var node = SCNNode()
+        
         if let imageAnchor = anchor as? ARImageAnchor {
             runHapticFeedback()
             node = createChildNodesToTheArt(node: node, imageAnchor: imageAnchor)
@@ -114,10 +153,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return node
     }
     
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        if let imageAnchor = anchor as? ARImageAnchor {
+            if (!imageAnchor.isTracked) {
+                // Fortsätt här ta bort node för att lägga till igen.. och cleara texten in textInfo
+                print("borta")
+            }
+            
+        }
+    }
+    
     func createChildNodesToTheArt(node: SCNNode, imageAnchor: ARImageAnchor) -> SCNNode {
         for art in paintings.artList {
             if (art.paintingName == imageAnchor.referenceImage.name) {
-                
+                referenceImageName = imageAnchor.referenceImage.name!
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
                 node.addChildNode(createTextNode(imageAnchor: imageAnchor, artist: art.artistName, paintingName: art.paintingName, scale: 0.001))
                 node.addChildNode(createInfoNode(imageAnchor: imageAnchor, scale: 0.1))
@@ -128,18 +177,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
         return node
     }
-    
-//    func artArea(art: Art) -> CGFloat{
-//        let widthInCm = art.width * 10
-//        let heightInCm = art.height * 10
-//        print(widthInCm)
-//        print(heightInCm)
-//        let area = widthInCm * heightInCm
-//        print("Area of \(art.paintingName) is: \(area)")
-//        let scale = CGFloat(area * 0.05)
-//        print("scale: \(scale)")
-//        return scale
-//    }
     
     func textToSpeech() {
         let string = "Referenced"
@@ -253,6 +290,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 
             case "infoPlane":
                 print("infoPlane")
+                for art in paintings.artList {
+                    if (art.paintingName == referenceImageName) {
+                        globalInfoViewController?.setTextInInfoView(paintingName: art.paintingName, artistName: art.artistName, infoText: art.infotextEn)
+                        hideOrShowInfoView()
+                    }
+                }
                 break
                 
             default:
