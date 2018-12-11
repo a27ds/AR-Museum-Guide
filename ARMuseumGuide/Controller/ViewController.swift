@@ -27,7 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let screenSize = UIScreen.main.bounds
     var isInfoViewHidden = true
     var referenceImageName = ""
-    var node = SCNNode()
+    var nodeList: [SCNNode] = [SCNNode]()
     
      @objc func closeButtonTapped(gesture: UIGestureRecognizer) {
         if (gesture.view as? UIImageView) != nil {
@@ -145,21 +145,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     // MARK: - ARSCNViewDelegate
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        
+        var newNode = SCNNode()
+        runHapticFeedback()
         if let imageAnchor = anchor as? ARImageAnchor {
-            runHapticFeedback()
-            node = createChildNodesToTheArt(node: node, imageAnchor: imageAnchor)
+            newNode = createChildNodesToTheArt(node: newNode, imageAnchor: imageAnchor)
         }
-        return node
+        return newNode
     }
     
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         if let imageAnchor = anchor as? ARImageAnchor {
             if (!imageAnchor.isTracked) {
-                // Fortsätt här ta bort node för att lägga till igen.. och cleara texten in textInfo
-                print("borta")
+                sceneView.session.remove(anchor: anchor)
             }
-            
         }
     }
     
@@ -173,6 +171,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 if (!art.audioUrl.isEmpty) {
                     node.addChildNode(createAudioNode(imageAnchor: imageAnchor, scale: 0.1))
                 }
+                node.name = art.paintingName
             }
         }
         return node
@@ -222,7 +221,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         infoNode.eulerAngles.x = -.pi / 2
         infoNode.name = "infoPlane"
         return infoNode
-        //blablablaç
     }
     
     func createTextNode(imageAnchor: ARImageAnchor, artist: String, paintingName: String, scale: Float) -> SCNNode {
@@ -261,7 +259,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         node.addChildNode(artistTextNode)
         node.addChildNode(paintingNameTextNode)
-        
         return node
     }
     

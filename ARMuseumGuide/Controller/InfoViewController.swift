@@ -24,6 +24,7 @@ class InfoViewController: UIViewController {
         super.viewDidLoad()
         globalInfoViewController = self
         layoutMenuView()
+        
     }
     
     func layoutMenuView() {
@@ -35,6 +36,9 @@ class InfoViewController: UIViewController {
     }
     
     public func setTextInInfoView(paintingName: String, artistName: String, infoText: String) -> Void {
+        infoTextView.text = ""
+        paintingNameLabel.text = ""
+        artistNameLabel.text = ""
         infoTextView.text = infoText
         paintingNameLabel.text = paintingName
         artistNameLabel.text = artistName
