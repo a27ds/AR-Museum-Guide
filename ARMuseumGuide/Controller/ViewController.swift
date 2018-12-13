@@ -41,6 +41,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAudioIconToPlay(_:)), name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateAudioIconToPause(_:)), name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
         globalInfoViewController?.setTextInInfoView(paintingName: "", artistName: "", infoText: "")
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeButtonTapped(gesture:)))
         closeButton.addGestureRecognizer(tapGesture)
@@ -54,6 +56,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         getInfoFromFirebase {
             self.downloadphotos(completion: self.setAR)
         }
+    }
+    
+    @objc func updateAudioIconToPlay(_ notification: Notification) {
+        let rootNode = sceneView.scene.rootNode
+        let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
+//        if (shouldPlayIconShow) {
+            if let image = UIImage(named: "play-button") {
+                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+            }
+//        }
+    }
+    
+    @objc func updateAudioIconToPause(_ notification: Notification) {
+        let rootNode = sceneView.scene.rootNode
+        let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
+//        if (shouldPlayIconShow) {
+            if let image = UIImage(named: "pause-button") {
+                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+            }
+//        }
     }
     
     func hideOrShowInfoView() {
@@ -121,17 +143,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        //        // Create a session configuration
-        //        let configuration = ARImageTrackingConfiguration()
-        // Creating the imageToTrack, if successfull then config the session
-        //        if let imageToTrack = ARReferenceImage.referenceImages(inGroupNamed: "Art Resources", bundle: Bundle.main) {
-        //            configuration.trackingImages = imageToTrack
-        //            configuration.maximumNumberOfTrackedImages = 2
-        //            print("Images Successfully Added")
-        //        }
-        //        // Run the view's session
-        //        sceneView.session.run(configuration)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -172,16 +183,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
                 node.addChildNode(createTextNode(imageAnchor: imageAnchor, artist: art.artistName, paintingName: art.paintingName, scale: 0.001))
                 node.addChildNode(createInfoNode(imageAnchor: imageAnchor, scale: 0.1))
-                if (!art.audioUrl.isEmpty) {
-                    node.addChildNode(createAudioNode(imageAnchor: imageAnchor, scale: 0.1))
-                }
+                node.addChildNode(createAudioNode(imageAnchor: imageAnchor, scale: 0.1))
                 node.name = art.paintingName
             }
         }
         return node
     }
-    
-    
     
     func createArtNode(imageAnchor: ARImageAnchor) -> SCNNode {
         let artPlane = SCNPlane(width: imageAnchor.referenceImage.physicalSize.width, height: imageAnchor.referenceImage.physicalSize.height)
@@ -194,24 +201,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return artPlaneNode
     }
     
-    func createAudioNode(imageAnchor: ARImageAnchor, scale: CGFloat) -> SCNNode {
-        let audioPlane = SCNPlane(width: scale, height: scale)
-        // add image to audio plane
-        if (audioController.haveAudioBeenStarted) {
-            updateAudioIcon(shouldPlayIconShow: audioController.isAudioPaused)
-        } else {
-            if let image = UIImage(named: "play-button") {
-                audioPlane.firstMaterial?.diffuse.contents = image
-            }
-        }
-        let audioNode = SCNNode(geometry: audioPlane)
-        audioNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + (Float(-audioPlane.height / 2) * 2) // top position
-        //                        audioPlaneNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-audioPlane.width / 2) // left position
-        audioNode.eulerAngles.x = -.pi / 2
-        audioNode.name = "audioPlane"
-        return audioNode
-    }
-    
     func createInfoNode(imageAnchor: ARImageAnchor, scale: CGFloat) -> SCNNode {
         let infoPlane = SCNPlane(width: scale, height: scale)
         if let image = UIImage(named: "information-button") {
@@ -222,6 +211,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         infoNode.eulerAngles.x = -.pi / 2
         infoNode.name = "infoPlane"
         return infoNode
+    }
+    
+    func createAudioNode(imageAnchor: ARImageAnchor, scale: CGFloat) -> SCNNode {
+        let audioPlane = SCNPlane(width: scale, height: scale)
+        // add image to audio plane
+        if let image = UIImage(named: "play-button") {
+            audioPlane.firstMaterial?.diffuse.contents = image
+        }
+        let audioNode = SCNNode(geometry: audioPlane)
+        audioNode.position.z = -Float(imageAnchor.referenceImage.physicalSize.height / 2) + (Float(-audioPlane.height / 2) * 2) // top position
+        //                        audioPlaneNode.position.x = Float(-imageAnchor.referenceImage.physicalSize.width / 2) + Float(-audioPlane.width / 2) // left position
+        audioNode.eulerAngles.x = -.pi / 2
+        audioNode.name = "audioPlane"
+        return audioNode
     }
     
     func createTextNode(imageAnchor: ARImageAnchor, artist: String, paintingName: String, scale: Float) -> SCNNode {
@@ -279,19 +282,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-    func updateAudioIcon(shouldPlayIconShow: Bool) {
-        let rootNode = sceneView.scene.rootNode
-        let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
-        if (shouldPlayIconShow) {
-            if let image = UIImage(named: "play-button") {
-                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
-            }
-        } else {
-            if let image = UIImage(named: "pause-button") {
-                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
-            }
-        }
-    }
+//    func updateAudioIcon(shouldPlayIconShow: Bool) {
+//        let rootNode = sceneView.scene.rootNode
+//        let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
+//        if (shouldPlayIconShow) {
+//            if let image = UIImage(named: "play-button") {
+//                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+//            }
+//        } else {
+//            if let image = UIImage(named: "pause-button") {
+//                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+//            }
+//        }
+//    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let currentTouchLocation = touches.first?.location(in: self.sceneView),
@@ -299,25 +302,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         if let artID = hitTestNode.name {
             switch (artID) {
-                
             case "artPlane":
                 print("artPlane")
                 break
-                
             case "audioPlane":
-//                print("audioPlane")
-                
-                
-                if (!audioController.haveAudioBeenStarted) {
-                    firstStartOfTextToSpeech(audioController: audioController)
-                    updateAudioIcon(shouldPlayIconShow: audioController.isAudioPaused)
-                } else {
-                    audioController.pauseOrPlayTextToSpeech()
-                    updateAudioIcon(shouldPlayIconShow: audioController.isAudioPaused)
+                for art in paintings.artList {
+                    if (art.paintingName == referenceImageName) {
+                        if (!art.audioUrl.isEmpty) {
+                            audioController.pauseOrPlayAudio()
+                        } else {
+                            if (!audioController.haveAudioBeenStarted) {
+                                firstStartOfTextToSpeech(audioController: audioController)
+                            } else {
+                                audioController.pauseOrPlayTextToSpeech()
+                            }
+                        }
+                    }
                 }
-                
-                
-                
                 
 //                if (!audioController.isAudioPlaying) {
 //                    print("1")
