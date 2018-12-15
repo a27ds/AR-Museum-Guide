@@ -11,6 +11,8 @@ import AVFoundation
 
 class AudioController {
     
+    
+    
     var haveAudioBeenStarted = false
     var isAudioPaused = false
     var utterance = AVSpeechUtterance()
@@ -21,25 +23,37 @@ class AudioController {
         isAudioPaused = false
     }
     
-    
     func startTextToSpeech(_ text: String) {
         utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         synth.speak(utterance)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
         isAudioPaused = false
     }
     
-    func pauseOrPlayTextToSpeech () {
+    func pauseOrPlayTextToSpeech() {
         if (isAudioPaused) {
             synth.continueSpeaking()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
             isAudioPaused = false
         } else {
             synth.pauseSpeaking(at: .word)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
             isAudioPaused = true
-            
         }
     }
     
+    func pauseOrPlayAudio() {
+        if (isAudioPaused) {
+            print("isPlaying")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
+            isAudioPaused = false
+        } else {
+            print("isPaused")
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
+            isAudioPaused = true
+        }
+    }
     
     
     
