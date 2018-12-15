@@ -308,13 +308,21 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             case "audioPlane":
                 for art in paintings.artList {
                     if (art.paintingName == referenceImageName) {
-                        if (!art.audioUrl.isEmpty) {
-                            audioController.pauseOrPlayAudio()
+                        if (!art.audioUrl.isEmpty && !audioController.haveAudioBeenStarted) {
+                            audioController.streamAudio(Url: art.audioUrl)
                         } else {
-                            if (!audioController.haveAudioBeenStarted) {
+                            if (!audioController.haveTextToSpeechBeenStarted) {
                                 firstStartOfTextToSpeech(audioController: audioController)
                             } else {
-                                audioController.pauseOrPlayTextToSpeech()
+                                if (audioController.player != nil) {
+                                    if (audioController.player.timeControlStatus == .playing) {
+                                        print("kommer jag hit")
+                                        audioController.pauseOrPlayAudio()
+                                    }
+                                } else {
+                                    audioController.pauseOrPlayTextToSpeech()
+                                }
+                                
                             }
                         }
                     }
