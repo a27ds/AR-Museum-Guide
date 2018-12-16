@@ -10,6 +10,7 @@
 		F3225C272189F296004C20F2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F3225C262189F296004C20F2 /* README.md */; };
 		F3389C1521C244C700629062 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3389C1421C244C700629062 /* AudioController.swift */; };
 		F34679D121A55DAC00A5CBF7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F34679D021A55DAC00A5CBF7 /* GoogleService-Info.plist */; };
+		F34D159B21C690430026E24B /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34D159A21C690430026E24B /* AudioViewController.swift */; };
 		F35C53D12189D95C00418AE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35C53D02189D95C00418AE1 /* AppDelegate.swift */; };
 		F35C53D32189D95C00418AE1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35C53D22189D95C00418AE1 /* ViewController.swift */; };
 		F35C53D62189D95C00418AE1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F35C53D42189D95C00418AE1 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 		F3225C262189F296004C20F2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F3389C1421C244C700629062 /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		F34679D021A55DAC00A5CBF7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F34D159A21C690430026E24B /* AudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		F35C53CD2189D95C00418AE1 /* ARMuseumGuide.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARMuseumGuide.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F35C53D02189D95C00418AE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F35C53D22189D95C00418AE1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				F35C53D22189D95C00418AE1 /* ViewController.swift */,
 				F3389C1421C244C700629062 /* AudioController.swift */,
 				F360172B21A2D44600962B81 /* InfoViewController.swift */,
+				F34D159A21C690430026E24B /* AudioViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				F35C53D12189D95C00418AE1 /* AppDelegate.swift in Sources */,
 				F3C4FEE721B1431000507E9A /* Art.swift in Sources */,
 				F3389C1521C244C700629062 /* AudioController.swift in Sources */,
+				F34D159B21C690430026E24B /* AudioViewController.swift in Sources */,
 				F3C4FEE921B1766D00507E9A /* Paintings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

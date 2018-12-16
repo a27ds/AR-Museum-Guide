@@ -36,19 +36,32 @@
                                     <constraint firstAttribute="width" constant="25" id="BYB-1Z-Xvn"/>
                                 </constraints>
                             </imageView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ns4-lO-1m9">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="XqS-kx-5KN"/>
+                                </constraints>
+                                <connections>
+                                    <segue destination="Xjg-3X-GGd" kind="embed" id="yAD-xJ-mHb"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="lE0-fX-X83" secondAttribute="trailing" constant="20" id="Adb-oY-Wkg"/>
                             <constraint firstAttribute="bottom" secondItem="ZwW-aJ-qfL" secondAttribute="bottom" id="CLd-6t-J2b"/>
+                            <constraint firstAttribute="trailing" secondItem="ns4-lO-1m9" secondAttribute="trailing" id="Jcf-CB-M2I"/>
                             <constraint firstItem="qKW-Yb-83E" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="QTk-Dm-cZA"/>
                             <constraint firstItem="qKW-Yb-83E" firstAttribute="top" secondItem="lE0-fX-X83" secondAttribute="bottom" constant="-20" id="Z0p-Hd-eOK"/>
+                            <constraint firstItem="ns4-lO-1m9" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="eCC-cl-XAI"/>
                             <constraint firstItem="ZwW-aJ-qfL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="fW3-uQ-laZ"/>
                             <constraint firstAttribute="bottom" secondItem="qKW-Yb-83E" secondAttribute="bottom" id="gBH-Xa-6ga"/>
                             <constraint firstAttribute="trailing" secondItem="ZwW-aJ-qfL" secondAttribute="trailing" id="m1M-Az-wHE"/>
                             <constraint firstItem="qKW-Yb-83E" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="psu-xJ-1fi"/>
+                            <constraint firstItem="ns4-lO-1m9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="sof-J5-g45"/>
                             <constraint firstItem="ZwW-aJ-qfL" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="uz5-Gv-3lB"/>
                             <constraint firstItem="qKW-Yb-83E" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="xms-5W-iK5"/>
+                            <constraint firstItem="ns4-lO-1m9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yGY-Ag-Igj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -116,8 +129,53 @@
             </objects>
             <point key="canvasLocation" x="144.92753623188406" y="742.63392857142856"/>
         </scene>
+        <!--Audio View Controller-->
+        <scene sceneID="Pam-jG-RxE">
+            <objects>
+                <viewController id="Xjg-3X-GGd" userLabel="Audio View Controller" customClass="AudioViewController" customModule="ARMuseumGuide" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vB1-xh-Gk6">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="80"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play-button" translatesAutoresizingMaskIntoConstraints="NO" id="ImD-Uy-wvP" userLabel="PlayAndPause">
+                                <rect key="frame" x="20" y="35" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="WTK-ra-uLH"/>
+                                    <constraint firstAttribute="height" constant="30" id="bNS-Wg-aQm"/>
+                                </constraints>
+                            </imageView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="mpe-u6-PLy">
+                                <rect key="frame" x="63" y="39" width="333" height="26"/>
+                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="OCH-ZU-7Y5"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="changeAudioTime:" destination="Xjg-3X-GGd" eventType="valueChanged" id="7DU-fe-OnA"/>
+                                </connections>
+                            </slider>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mpe-u6-PLy" firstAttribute="leading" secondItem="ImD-Uy-wvP" secondAttribute="trailing" constant="15" id="AfO-C9-QKY"/>
+                            <constraint firstAttribute="bottom" secondItem="mpe-u6-PLy" secondAttribute="bottom" constant="16" id="Or8-O9-xkK"/>
+                            <constraint firstAttribute="trailing" secondItem="mpe-u6-PLy" secondAttribute="trailing" constant="20" id="cmK-A5-bBO"/>
+                            <constraint firstItem="ImD-Uy-wvP" firstAttribute="leading" secondItem="vB1-xh-Gk6" secondAttribute="leading" constant="20" id="dRC-nt-pn4"/>
+                            <constraint firstAttribute="bottom" secondItem="ImD-Uy-wvP" secondAttribute="bottom" constant="15" id="mkD-OU-Web"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="8a5-hc-iJa"/>
+                    </view>
+                    <connections>
+                        <outlet property="audioSlider" destination="mpe-u6-PLy" id="I3x-te-iNc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U9V-Rd-Sie" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="100.00000000000001" y="-318.08035714285711"/>
+        </scene>
     </scenes>
     <resources>
         <image name="close" width="409.60000610351562" height="409.60000610351562"/>
+        <image name="play-button" width="314.16000366210938" height="314.16000366210938"/>
     </resources>
 </document>

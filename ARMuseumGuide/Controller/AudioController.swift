@@ -9,6 +9,8 @@
 import Foundation
 import AVFoundation
 
+var globalAudioController: AudioController?
+
 class AudioController {
     
     var haveAudioBeenStarted = false
@@ -18,8 +20,10 @@ class AudioController {
     var utterance = AVSpeechUtterance()
     var synth = AVSpeechSynthesizer()
     var player: AVPlayer!
+    var timer: Timer?
     
     init() {
+        globalAudioController = self
         haveAudioBeenStarted = false
         isAudioPaused = false
         haveTextToSpeechBeenStarted = false
@@ -54,6 +58,8 @@ class AudioController {
             isTextToSpeechPaused = true
         }
     }
+
+    
     
     func pauseOrPlayAudio() {
         if (isAudioPaused) {
@@ -82,9 +88,21 @@ class AudioController {
         let url  = URL.init(string: Url)
         let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
         player = AVPlayer(playerItem: playerItem)
+        globalAudioViewController?.audioSlider.value = 0.0
+        if let duration = player.currentItem?.duration {
+            print(Float(CMTimeGetSeconds(duration)))
+            globalAudioViewController?.audioSlider.maximumValue = Float(CMTimeGetSeconds(duration))
+        }
         player.play()
+        timer = Timer.scheduledTimer(timeInterval: 0.0001, target: self, selector: #selector(self.updateSlider), userInfo: nil, repeats: true)
         isAudioPaused = false
         haveAudioBeenStarted = true
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
+    }
+    
+    @objc func updateSlider() {
+        if let currentTime = player.currentItem?.currentTime() {
+            globalAudioViewController?.audioSlider.value = Float(CMTimeGetSeconds(currentTime))
+        }
     }
 }
