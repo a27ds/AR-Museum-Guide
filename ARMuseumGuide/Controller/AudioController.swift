@@ -19,7 +19,6 @@ class AudioController {
     var synth = AVSpeechSynthesizer()
     var player: AVPlayer!
     
-    
     init() {
         haveAudioBeenStarted = false
         isAudioPaused = false
@@ -88,9 +87,6 @@ class AudioController {
         haveAudioBeenStarted = true
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
     }
-    
-    
-    
 }
 
 

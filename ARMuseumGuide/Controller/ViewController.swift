@@ -30,14 +30,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var activeNode: SCNNode!
     let audioController = AudioController()
     
-    
-    
-     @objc func closeButtonTapped(gesture: UIGestureRecognizer) {
+    @objc func closeButtonTapped(gesture: UIGestureRecognizer) {
         if (gesture.view as? UIImageView) != nil {
             hideOrShowInfoView()
         }
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +49,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Set the view's delegate
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = true
-        
         getInfoFromFirebase {
             self.downloadphotos(completion: self.setAR)
         }
@@ -61,21 +57,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @objc func updateAudioIconToPlay(_ notification: Notification) {
         let rootNode = sceneView.scene.rootNode
         let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
-//        if (shouldPlayIconShow) {
-            if let image = UIImage(named: "play-button") {
-                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
-            }
-//        }
+        if let image = UIImage(named: "play-button") {
+            audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+        }
     }
     
     @objc func updateAudioIconToPause(_ notification: Notification) {
         let rootNode = sceneView.scene.rootNode
         let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
-//        if (shouldPlayIconShow) {
-            if let image = UIImage(named: "pause-button") {
-                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
-            }
-//        }
+        if let image = UIImage(named: "pause-button") {
+            audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+        }
     }
     
     func hideOrShowInfoView() {
@@ -87,7 +79,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 self.closeButton.alpha = 1.0
                 self.view.layoutIfNeeded()
             }
-            
         } else {
             isInfoViewHidden = true
             infoViewHeight.constant = screenSize.height * 0.1
@@ -112,7 +103,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func downloadphotos(completion: @escaping () -> Void) {
         DispatchQueue.global(qos: .userInitiated).async {
             let downloadGroup = DispatchGroup()
-            
             for art in self.paintings.artList {
                 downloadGroup.enter()
                 let destination: DownloadRequest.DownloadFileDestination = { _, _ in
@@ -272,95 +262,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         node.eulerAngles.x = -.pi / 2
     }
     
-    func firstStartOfTextToSpeech(audioController: AudioController) {
-        for art in paintings.artList {
-            if (art.paintingName == referenceImageName) {
-                audioController.startTextToSpeech(art.infotextEn)
-                audioController.haveAudioBeenStarted = true
-                print("1audio playing: \(audioController.isAudioPaused)")
-            }
-        }
-    }
-    
-//    func updateAudioIcon(shouldPlayIconShow: Bool) {
-//        let rootNode = sceneView.scene.rootNode
-//        let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
-//        if (shouldPlayIconShow) {
-//            if let image = UIImage(named: "play-button") {
-//                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
-//            }
-//        } else {
-//            if let image = UIImage(named: "pause-button") {
-//                audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
-//            }
-//        }
-//    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let currentTouchLocation = touches.first?.location(in: self.sceneView),
             let hitTestNode = self.sceneView.hitTest(currentTouchLocation, options: nil).first?.node else { return }
-        
         if let artID = hitTestNode.name {
             switch (artID) {
             case "artPlane":
                 print("artPlane")
                 break
             case "audioPlane":
-                
-                
-//                for art in paintings.artList {
-//                    if (art.paintingName == referenceImageName) {
-//                        if (!art.audioUrl.isEmpty && !audioController.haveAudioBeenStarted) {
-//                            audioController.streamAudio(Url: art.audioUrl)
-//                        } else {
-//                            if (!audioController.haveTextToSpeechBeenStarted) {
-//                                firstStartOfTextToSpeech(audioController: audioController)
-//                            } else {
-//                                if (audioController.player != nil) {
-//                                    if (audioController.player.timeControlStatus == .playing) {
-//                                        print("kommer jag hit")
-//                                        audioController.pauseOrPlayAudio()
-//                                    }
-//                                } else {
-//                                    audioController.pauseOrPlayTextToSpeech()
-//                                }
-//                            }
-//                        }
-//                    }
-                
-                    for art in paintings.artList {
-                        if (art.paintingName == referenceImageName) {
-                            if (!audioController.haveAudioBeenStarted || !audioController.haveTextToSpeechBeenStarted) {
-                                if (art.audioUrl.isEmpty) {
-                                    audioController.startTextToSpeech(art.infotextEn)
-                                } else {
-                                    audioController.streamAudio(Url: art.audioUrl)
-                                }
+                for art in paintings.artList {
+                    if (art.paintingName == referenceImageName) {
+                        if (!audioController.haveAudioBeenStarted || !audioController.haveTextToSpeechBeenStarted) {
+                            if (art.audioUrl.isEmpty) {
+                                audioController.startTextToSpeech(art.infotextEn)
                             } else {
-                                if (art.audioUrl.isEmpty) {
-                                    audioController.pauseOrPlayTextToSpeech()
-                                } else {
-                                    audioController.pauseOrPlayAudio()
-                                }
+                                audioController.streamAudio(Url: art.audioUrl)
+                            }
+                        } else {
+                            if (art.audioUrl.isEmpty) {
+                                audioController.pauseOrPlayTextToSpeech()
+                            } else {
+                                audioController.pauseOrPlayAudio()
                             }
                         }
                     }
-                
-                
-//                if (!audioController.isAudioPlaying) {
-//                    print("1")
-//
-//                    if (!audioController.haveAudioBeenStarted) {
-//                        print("3")
-//
-//                    } else {
-//                        print("4")
-//                        audioController.pauseOrPlayTextToSpeech(isPlaying: audioController.isAudioPlaying)
-//                    }
-//                } else {
-//                    print("5")
-//
-//                }
+                }
                 break
             case "infoPlane":
                 print("infoPlane")
@@ -375,79 +302,5 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 break
             }
         }
-        
     }
-    
-    //    func getDataFromFireStore() {
-    //        //            testkod
-    //
-    //        let db = Firestore.firestore()
-    //        db.collection("exhibitions").getDocuments() { (querySnapshot, err) in
-    //            self.docRef.getDocument { (document, error) in
-    //                if let document = document, document.exists {
-    //                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-    //                    print("Document data: \(dataDescription)")
-    //                } else {
-    //                    print("Document does not exist")
-    //                }
-    //            }
-    //            //                if let err = err {
-    //            //                    print("Error getting documents: \(err)")
-    //            //                } else if let querySnapshot = querySnapshot {
-    //            //                    for document in querySnapshot.documents {
-    //            //                        print("\(document.documentID) => \(document.data())")
-    //            //                    }
-    //            //
-    //            //                }
-    //        }
-    //
-    //        //            db.collection("cities").getDocuments() { (querySnapshot, err) in
-    //        //                if let err = err {
-    //        //                    print("Error getting documents: \(err)")
-    //        //                } else {
-    //        //                    for document in querySnapshot!.documents {
-    //        //                        print("\(document.documentID) => \(document.data())")
-    //        //                    }
-    //        //                }
-    //        //            }
-    //
-    //
-    //        //            let dataToSave : [String: Any] = ["test": 1234, "name": "andy"]
-    //        //            docRef.setData(dataToSave) { (error) in
-    //        //                if let error = error {
-    //        //                    print("not compute: \(error.localizedDescription)")
-    //        //                } else {
-    //        //                    print("data been saved")
-    //        //                }
-    //        //            }
-    //
-    //
-    //        //            testkod
-    //    }
-    //
-    //}
-    //
-    ////    override func viewWillTransition(to size: CGSize,   with coordinator:    UIViewControllerTransitionCoordinator) {
-    ////
-    ////        coordinator.animate(alongsideTransition: { (UIViewControllerTransitionCoordinatorContext) -> Void in
-    ////
-    ////            let orient = UIApplication.shared.statusBarOrientation
-    ////
-    ////            switch orient {
-    ////            case .portrait:
-    ////                print("Portrait")
-    ////                self.applyportraitConstraint()
-    ////                break
-    ////            // Do something
-    ////            default:
-    ////                print("LandScape")
-    ////                // Do something else
-    ////                self.applyLandScapeConstraint()
-    ////                break
-    ////            }
-    ////        }, completion: { (UIViewControllerTransitionCoordinatorContext) -> Void in
-    ////            print("rotation completed")
-    ////        })
-    ////        super.viewWillTransition(to: size, with: coordinator)
-    ////    }
 }
