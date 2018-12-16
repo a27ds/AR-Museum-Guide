@@ -28,12 +28,20 @@ class AudioController {
     }
     
     func startTextToSpeech(_ text: String) {
+        if (haveAudioBeenStarted) {
+            stopAudio()
+        }
         utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         synth.speak(utterance)
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
         isTextToSpeechPaused = false
         haveTextToSpeechBeenStarted = true
+    }
+    
+    func stopTextToSpeech() {
+        synth.stopSpeaking(at: .immediate)
+        haveTextToSpeechBeenStarted = false
     }
     
     func pauseOrPlayTextToSpeech() {
@@ -62,7 +70,16 @@ class AudioController {
         }
     }
     
+    func stopAudio() {
+        player.pause()
+        player = nil
+        haveAudioBeenStarted = false
+    }
+    
     func streamAudio(Url: String) {
+        if (haveTextToSpeechBeenStarted) {
+            stopTextToSpeech()
+        }
         let url  = URL.init(string: Url)
         let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
         player = AVPlayer(playerItem: playerItem)

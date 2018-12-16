@@ -306,27 +306,46 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 print("artPlane")
                 break
             case "audioPlane":
-                for art in paintings.artList {
-                    if (art.paintingName == referenceImageName) {
-                        if (!art.audioUrl.isEmpty && !audioController.haveAudioBeenStarted) {
-                            audioController.streamAudio(Url: art.audioUrl)
-                        } else {
-                            if (!audioController.haveTextToSpeechBeenStarted) {
-                                firstStartOfTextToSpeech(audioController: audioController)
-                            } else {
-                                if (audioController.player != nil) {
-                                    if (audioController.player.timeControlStatus == .playing) {
-                                        print("kommer jag hit")
-                                        audioController.pauseOrPlayAudio()
-                                    }
+                
+                
+//                for art in paintings.artList {
+//                    if (art.paintingName == referenceImageName) {
+//                        if (!art.audioUrl.isEmpty && !audioController.haveAudioBeenStarted) {
+//                            audioController.streamAudio(Url: art.audioUrl)
+//                        } else {
+//                            if (!audioController.haveTextToSpeechBeenStarted) {
+//                                firstStartOfTextToSpeech(audioController: audioController)
+//                            } else {
+//                                if (audioController.player != nil) {
+//                                    if (audioController.player.timeControlStatus == .playing) {
+//                                        print("kommer jag hit")
+//                                        audioController.pauseOrPlayAudio()
+//                                    }
+//                                } else {
+//                                    audioController.pauseOrPlayTextToSpeech()
+//                                }
+//                            }
+//                        }
+//                    }
+                
+                    for art in paintings.artList {
+                        if (art.paintingName == referenceImageName) {
+                            if (!audioController.haveAudioBeenStarted || !audioController.haveTextToSpeechBeenStarted) {
+                                if (art.audioUrl.isEmpty) {
+                                    audioController.startTextToSpeech(art.infotextEn)
                                 } else {
-                                    audioController.pauseOrPlayTextToSpeech()
+                                    audioController.streamAudio(Url: art.audioUrl)
                                 }
-                                
+                            } else {
+                                if (art.audioUrl.isEmpty) {
+                                    audioController.pauseOrPlayTextToSpeech()
+                                } else {
+                                    audioController.pauseOrPlayAudio()
+                                }
                             }
                         }
                     }
-                }
+                
                 
 //                if (!audioController.isAudioPlaying) {
 //                    print("1")
