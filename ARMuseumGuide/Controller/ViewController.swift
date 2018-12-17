@@ -273,13 +273,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             case "audioPlane":
                 for art in paintings.artList {
                     if (art.paintingName == referenceImageName) {
-                        if (!audioController.haveAudioBeenStarted || !audioController.haveTextToSpeechBeenStarted) {
-                            if (art.audioUrl.isEmpty) {
-                                audioController.startTextToSpeech(art.infotextEn)
-                            } else {
-                                audioController.streamAudio(Url: art.audioUrl)
-                            }
+                        if (!audioController.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
+                            print("startTTS: \(audioController.haveTextToSpeechBeenStarted)")
+                            audioController.startTextToSpeech(art.infotextEn)
+                        } else if (!audioController.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
+                            print("startAudio: \(audioController.haveAudioBeenStarted)")
+                            audioController.streamAudio(Url: art.audioUrl)
                         } else {
+                            print("play/pause: \(audioController.haveAudioBeenStarted)")
                             if (art.audioUrl.isEmpty) {
                                 audioController.pauseOrPlayTextToSpeech()
                             } else {

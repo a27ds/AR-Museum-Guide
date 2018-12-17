@@ -26,12 +26,21 @@ class AudioController {
     var audioDownloadUrl: URL?
     var observer: NSKeyValueObservation?
     
+    
+    
+    
+    @objc func playerDidFinishPlaying(note: NSNotification) {
+        print("Video Finished")
+        stopAudio()
+    }
+    
     init() {
         globalAudioController = self
         haveAudioBeenStarted = false
         isAudioPaused = false
         haveTextToSpeechBeenStarted = false
         isTextToSpeechPaused = false
+        
     }
     
     func startTextToSpeech(_ text: String) {
@@ -81,12 +90,15 @@ class AudioController {
         player.pause()
         player = nil
         haveAudioBeenStarted = false
+        timer?.invalidate()
+        globalAudioViewController?.audioSlider.value = 0.0
     }
     
     func streamAudio(Url: String) {
         if (haveTextToSpeechBeenStarted) {
             stopTextToSpeech()
         }
+        
         downloadAudio(url: Url) {
             if let url = self.audioDownloadUrl {
                 self.playerItem = AVPlayerItem(url: url)
@@ -99,6 +111,7 @@ class AudioController {
             self.isAudioPaused = false
             self.haveAudioBeenStarted = true
             NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidFinishPlaying(note:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
         }
     }
     
@@ -118,7 +131,8 @@ class AudioController {
         self.observer = playerItem.observe(\.status, options:  [.new, .old], changeHandler: { (playerItem, change) in
             if playerItem.status == .readyToPlay {
                 if let duration = self.player.currentItem?.duration {
-                    globalAudioViewController?.audioSlider.maximumValue = Float(duration.seconds)
+                    globalAudioViewController?.audioSlider.minimumValue = 0
+                    globalAudioViewController?.audioSlider.maximumValue = Float(CMTimeGetSeconds(duration))
                 }
             }
         })
@@ -151,8 +165,10 @@ class AudioController {
     }
     
     @objc func updateSlider() {
-        if let currentTime = player.currentItem?.currentTime() {
-            globalAudioViewController?.audioSlider.value = Float(CMTimeGetSeconds(currentTime))
+        if (haveAudioBeenStarted) {
+            if let currentTime = player.currentItem?.currentTime() {
+                globalAudioViewController?.audioSlider.value = Float(CMTimeGetSeconds(currentTime))
+            }
         }
     }
 }
