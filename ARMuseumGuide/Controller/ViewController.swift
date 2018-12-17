@@ -29,6 +29,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var referenceImageName = ""
     var activeNode: SCNNode!
     let audioController = AudioController()
+    var lastPaintingThatBeenLoaded: String?
     
     @objc func closeButtonTapped(gesture: UIGestureRecognizer) {
         if (gesture.view as? UIImageView) != nil {
@@ -162,6 +163,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         if let imageAnchor = anchor as? ARImageAnchor {
             if (!imageAnchor.isTracked) {
                 sceneView.session.remove(anchor: anchor)
+                lastPaintingThatBeenLoaded = anchor.name
             }
         }
     }
@@ -170,6 +172,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         for art in paintings.artList {
             if (art.paintingName == imageAnchor.referenceImage.name) {
                 referenceImageName = imageAnchor.referenceImage.name!
+                if (referenceImageName != lastPaintingThatBeenLoaded && (globalAudioController?.haveAudioBeenStarted)!) {
+                    globalAudioController?.stopAudio()
+                } else if ( referenceImageName != lastPaintingThatBeenLoaded && (globalAudioController?.haveTextToSpeechBeenStarted)!) {
+                    globalAudioController?.stopTextToSpeech()
+                }
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
                 node.addChildNode(createTextNode(imageAnchor: imageAnchor, artist: art.artistName, paintingName: art.paintingName, scale: 0.001))
                 node.addChildNode(createInfoNode(imageAnchor: imageAnchor, scale: 0.1))

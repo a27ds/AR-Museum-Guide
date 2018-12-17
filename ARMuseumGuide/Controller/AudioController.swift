@@ -87,10 +87,10 @@ class AudioController {
     }
     
     func stopAudio() {
+        timer?.invalidate()
         player.pause()
         player = nil
         haveAudioBeenStarted = false
-        timer?.invalidate()
         globalAudioViewController?.audioSlider.value = 0.0
     }
     
