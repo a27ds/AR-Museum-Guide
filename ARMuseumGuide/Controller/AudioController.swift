@@ -8,6 +8,7 @@
 
 import Foundation
 import AVFoundation
+import Alamofire
 
 var globalAudioController: AudioController?
 
@@ -20,7 +21,10 @@ class AudioController {
     var utterance = AVSpeechUtterance()
     var synth = AVSpeechSynthesizer()
     var player: AVPlayer!
+    var playerItem: AVPlayerItem!
     var timer: Timer?
+    var audioDownloadUrl: URL?
+    var observer: NSKeyValueObservation?
     
     init() {
         globalAudioController = self
@@ -58,8 +62,6 @@ class AudioController {
             isTextToSpeechPaused = true
         }
     }
-
-    
     
     func pauseOrPlayAudio() {
         if (isAudioPaused) {
@@ -85,19 +87,67 @@ class AudioController {
         if (haveTextToSpeechBeenStarted) {
             stopTextToSpeech()
         }
-        let url  = URL.init(string: Url)
-        let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
-        player = AVPlayer(playerItem: playerItem)
-        globalAudioViewController?.audioSlider.value = 0.0
-        if let duration = player.currentItem?.duration {
-            print(Float(CMTimeGetSeconds(duration)))
-            globalAudioViewController?.audioSlider.maximumValue = Float(CMTimeGetSeconds(duration))
+        downloadAudio(url: Url) {
+            if let url = self.audioDownloadUrl {
+                self.playerItem = AVPlayerItem(url: url)
+                self.player = AVPlayer(playerItem: self.playerItem)
+            }
+            globalAudioViewController?.audioSlider.value = 0.0
+            self.prepareToPlay()
+            self.player.play()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.0001, target: self, selector: #selector(self.updateSlider), userInfo: nil, repeats: true)
+            self.isAudioPaused = false
+            self.haveAudioBeenStarted = true
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
         }
-        player.play()
-        timer = Timer.scheduledTimer(timeInterval: 0.0001, target: self, selector: #selector(self.updateSlider), userInfo: nil, repeats: true)
-        isAudioPaused = false
-        haveAudioBeenStarted = true
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
+    }
+    
+    func prepareToPlay() {
+        // Create asset to be played
+        let asset = AVAsset(url: audioDownloadUrl!)
+        
+        let assetKeys = [
+            "playable",
+            "notPlayable"
+        ]
+        // Create a new AVPlayerItem with the asset and an
+        // array of asset keys to be automatically loaded
+        let playerItem = AVPlayerItem(asset: asset, automaticallyLoadedAssetKeys: assetKeys)
+        
+        // Register as an observer of the player item's status property
+        self.observer = playerItem.observe(\.status, options:  [.new, .old], changeHandler: { (playerItem, change) in
+            if playerItem.status == .readyToPlay {
+                if let duration = self.player.currentItem?.duration {
+                    globalAudioViewController?.audioSlider.maximumValue = Float(duration.seconds)
+                }
+            }
+        })
+        // Associate the player item with the player
+        player = AVPlayer(playerItem: playerItem)
+    }
+    
+    func downloadAudio(url: String, completion: @escaping () -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let downloadGroup = DispatchGroup()
+            downloadGroup.enter()
+            let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+                let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                let fileURL = documentsURL.appendingPathComponent("\(url).mp3")
+                return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+            }
+            Alamofire.download(url, to: destination).response { response in
+                if response.error == nil {
+                    if let dataUrl = response.destinationURL {
+                        self.audioDownloadUrl = dataUrl
+                    }
+                    downloadGroup.leave()
+                }
+            }
+            downloadGroup.wait()
+            downloadGroup.notify(queue: DispatchQueue.main) {
+                completion()
+            }
+        }
     }
     
     @objc func updateSlider() {
