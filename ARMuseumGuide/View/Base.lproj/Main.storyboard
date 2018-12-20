@@ -168,7 +168,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="1" green="0.098874639979999998" blue="0.16722366280000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="mpe-u6-PLy" secondAttribute="bottom" constant="16" id="Euw-9D-3ea"/>
                             <constraint firstAttribute="bottom" secondItem="Yav-LF-IjM" secondAttribute="bottom" constant="15" id="Ey2-kX-Aff"/>

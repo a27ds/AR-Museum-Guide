@@ -13,6 +13,8 @@ import Firebase
 import AVFoundation
 import Alamofire
 
+var globalViewController: ViewController?
+
 class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
@@ -26,6 +28,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let configuration = ARImageTrackingConfiguration()
     
     let screenSize = UIScreen.main.bounds
+    
     
     let paintings = Paintings()
     var isInfoViewHidden = true
@@ -42,6 +45,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        globalViewController = self
         NotificationCenter.default.addObserver(self, selector: #selector(updateAudioIconToPlay(_:)), name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateAudioIconToPause(_:)), name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
         globalInfoViewController?.setTextInInfoView(paintingName: "", artistName: "", infoText: "")
@@ -193,10 +197,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         for art in paintings.artList {
             if (art.paintingName == imageAnchor.referenceImage.name) {
                 referenceImageName = imageAnchor.referenceImage.name!
+                // kolla in buggen här.. när man går från dali till starry night.. == crash
                 if (referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveAudioBeenStarted)!) {
+                    DispatchQueue.main.async {
                     globalAudioViewController?.stopAudio()
+                    }
                 } else if ( referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveTextToSpeechBeenStarted)!) {
+                    DispatchQueue.main.async {
                     globalAudioViewController?.stopTextToSpeech()
+                    }
                 }
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
                 node.addChildNode(createTextNode(imageAnchor: imageAnchor, artist: art.artistName, paintingName: art.paintingName, scale: 0.001))
@@ -303,8 +312,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     if (art.paintingName == referenceImageName) {
                         if (!globalAudioViewController!.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
                             globalAudioViewController!.startTextToSpeech(art.infotextEn)
+                            hideOrShowAudioView()
                         } else if (!globalAudioViewController!.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
                             globalAudioViewController!.streamAudio(Url: art.audioUrl)
+                            hideOrShowAudioView()
                         } else {
                             if (art.audioUrl.isEmpty) {
                                 globalAudioViewController!.pauseOrPlayTextToSpeech()
@@ -312,7 +323,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                 globalAudioViewController!.pauseOrPlayAudio()
                             }
                         }
-                        hideOrShowAudioView()
                     }
                 }
                 break

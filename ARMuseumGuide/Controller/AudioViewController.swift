@@ -26,13 +26,10 @@ class AudioViewController: UIViewController {
     var timer: Timer?
     var audioDownloadUrl: URL?
     var observer: NSKeyValueObservation?
-
+    
     @IBOutlet weak var audioSlider: UISlider!
     @IBOutlet weak var playAndPause: UIImageView!
     @IBOutlet weak var stopButton: UIImageView!
-    
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +38,38 @@ class AudioViewController: UIViewController {
         isAudioPaused = false
         haveTextToSpeechBeenStarted = false
         isTextToSpeechPaused = false
-        
+        let playPauseTapGesture = UITapGestureRecognizer(target: self, action: #selector(playPauseButtonTapped(gesture:)))
+        playAndPause.addGestureRecognizer(playPauseTapGesture)
+        playAndPause.isUserInteractionEnabled = true
+        let stopTapGesture = UITapGestureRecognizer(target: self, action: #selector(stopButtonTapped(gesture:)))
+        stopButton.addGestureRecognizer(stopTapGesture)
+        stopButton.isUserInteractionEnabled = true
         if let image = UIImage(named: "thumb-slider") {
             audioSlider.setThumbImage(image, for: .normal)
             audioSlider.setThumbImage(image, for: .highlighted)
         }
         audioSlider.value = 0.0
         audioSlider.isHidden = true
+    }
+    
+    @objc func playPauseButtonTapped(gesture: UIGestureRecognizer) {
+        if (gesture.view as? UIImageView) != nil {
+            if (haveAudioBeenStarted) {
+                pauseOrPlayAudio()
+            } else {
+                pauseOrPlayTextToSpeech()
+            }
+        }
+    }
+    
+    @objc func stopButtonTapped(gesture: UIGestureRecognizer) {
+        if (gesture.view as? UIImageView) != nil {
+            if (haveAudioBeenStarted) {
+                stopAudio()
+            } else {
+                stopTextToSpeech()
+            }
+        }
     }
     
     @IBAction func changeAudioTime(_ sender: Any) {
@@ -67,6 +89,7 @@ class AudioViewController: UIViewController {
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         synth.speak(utterance)
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
+        changePlayIconInAudioViewToPause(true)
         isTextToSpeechPaused = false
         haveTextToSpeechBeenStarted = true
     }
@@ -74,15 +97,20 @@ class AudioViewController: UIViewController {
     func stopTextToSpeech() {
         synth.stopSpeaking(at: .immediate)
         haveTextToSpeechBeenStarted = false
+        changePlayIconInAudioViewToPause(false)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
+        globalViewController?.hideOrShowAudioView()
     }
     
     func pauseOrPlayTextToSpeech() {
         if (isTextToSpeechPaused) {
             synth.continueSpeaking()
+            changePlayIconInAudioViewToPause(true)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
             isTextToSpeechPaused = false
         } else {
             synth.pauseSpeaking(at: .word)
+            changePlayIconInAudioViewToPause(false)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
             isTextToSpeechPaused = true
         }
@@ -92,11 +120,13 @@ class AudioViewController: UIViewController {
         if (isAudioPaused) {
             print("isPlaying")
             player.play()
+            changePlayIconInAudioViewToPause(true)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
             isAudioPaused = false
         } else {
             print("isPaused")
             player.pause()
+            changePlayIconInAudioViewToPause(false)
             NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
             isAudioPaused = true
         }
@@ -105,8 +135,11 @@ class AudioViewController: UIViewController {
     func stopAudio() {
         timer?.invalidate()
         player.pause()
+        changePlayIconInAudioViewToPause(false)
         player = nil
+        globalViewController?.hideOrShowAudioView()
         haveAudioBeenStarted = false
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
         DispatchQueue.main.async {
             //need to do the change in an dispatchqueue, because the function is called from another thread then the main thread
             self.audioSlider.value = 0.0
@@ -127,11 +160,26 @@ class AudioViewController: UIViewController {
             self.audioSlider.value = 0.0
             self.prepareToPlay()
             self.player.play()
+            self.changePlayIconInAudioViewToPause(true)
             self.timer = Timer.scheduledTimer(timeInterval: 0.0001, target: self, selector: #selector(self.updateSlider), userInfo: nil, repeats: true)
             self.isAudioPaused = false
             self.haveAudioBeenStarted = true
             NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(self.playerDidFinishPlaying(note:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
+        }
+    }
+    
+    func changePlayIconInAudioViewToPause(_ isPauseVisible: Bool) {
+        DispatchQueue.main.async {
+            if (isPauseVisible) {
+                if let image = UIImage(named: "pause-button") {
+                    self.playAndPause.image = image
+                }
+            } else {
+                if let image = UIImage(named: "play-button") {
+                    self.playAndPause.image = image
+                }
+            }
         }
     }
     
