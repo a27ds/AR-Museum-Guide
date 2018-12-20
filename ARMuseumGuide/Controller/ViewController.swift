@@ -172,10 +172,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         for art in paintings.artList {
             if (art.paintingName == imageAnchor.referenceImage.name) {
                 referenceImageName = imageAnchor.referenceImage.name!
-                if (referenceImageName != lastPaintingThatBeenLoaded && (globalAudioController?.haveAudioBeenStarted)!) {
-                    globalAudioController?.stopAudio()
-                } else if ( referenceImageName != lastPaintingThatBeenLoaded && (globalAudioController?.haveTextToSpeechBeenStarted)!) {
-                    globalAudioController?.stopTextToSpeech()
+                if (referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveAudioBeenStarted)!) {
+                    globalAudioViewController?.stopAudio()
+                } else if ( referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveTextToSpeechBeenStarted)!) {
+                    globalAudioViewController?.stopTextToSpeech()
                 }
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
                 node.addChildNode(createTextNode(imageAnchor: imageAnchor, artist: art.artistName, paintingName: art.paintingName, scale: 0.001))
@@ -280,18 +280,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             case "audioPlane":
                 for art in paintings.artList {
                     if (art.paintingName == referenceImageName) {
-                        if (!audioController.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
-                            print("startTTS: \(audioController.haveTextToSpeechBeenStarted)")
-                            audioController.startTextToSpeech(art.infotextEn)
-                        } else if (!audioController.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
-                            print("startAudio: \(audioController.haveAudioBeenStarted)")
-                            audioController.streamAudio(Url: art.audioUrl)
+                        if (!globalAudioViewController!.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
+                            print("startTTS: \(globalAudioViewController!.haveTextToSpeechBeenStarted)")
+                            globalAudioViewController!.startTextToSpeech(art.infotextEn)
+                        } else if (!globalAudioViewController!.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
+                            print("startAudio: \(globalAudioViewController!.haveAudioBeenStarted)")
+                            globalAudioViewController!.streamAudio(Url: art.audioUrl)
                         } else {
-                            print("play/pause: \(audioController.haveAudioBeenStarted)")
+                            print("play/pause: \(globalAudioViewController!.haveAudioBeenStarted)")
                             if (art.audioUrl.isEmpty) {
-                                audioController.pauseOrPlayTextToSpeech()
+                                globalAudioViewController!.pauseOrPlayTextToSpeech()
                             } else {
-                                audioController.pauseOrPlayAudio()
+                                globalAudioViewController!.pauseOrPlayAudio()
                             }
                         }
                     }
