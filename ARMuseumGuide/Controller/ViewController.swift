@@ -18,17 +18,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var infoViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var audioViewHeight: NSLayoutConstraint!
+    
     @IBOutlet weak var closeButton: UIImageView!
-    //    @IBOutlet weak var infoView: UIView!
+    
     let impact = UINotificationFeedbackGenerator()
-    // Create a session configuration
     let configuration = ARImageTrackingConfiguration()
-    let paintings = Paintings()
+    
     let screenSize = UIScreen.main.bounds
+    
+    let paintings = Paintings()
     var isInfoViewHidden = true
+    var isAudioViewHidden = true
     var referenceImageName = ""
     var activeNode: SCNNode!
-    let audioController = AudioController()
     var lastPaintingThatBeenLoaded: String?
     
     @objc func closeButtonTapped(gesture: UIGestureRecognizer) {
@@ -46,8 +49,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         closeButton.addGestureRecognizer(tapGesture)
         closeButton.isUserInteractionEnabled = true
         infoViewHeight.constant = screenSize.height * 0.1
+        audioViewHeight.constant = 0.0
         closeButton.alpha = 0.0
-        // Set the view's delegate
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = true
         getInfoFromFirebase {
@@ -68,6 +71,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let audioButtonNode = rootNode.childNode(withName: "audioPlane", recursively: true)
         if let image = UIImage(named: "pause-button") {
             audioButtonNode?.geometry?.firstMaterial?.diffuse.contents = image
+        }
+    }
+    
+    func hideOrShowAudioView() {
+        if (isAudioViewHidden) {
+            isAudioViewHidden = false
+            audioViewHeight.constant = screenSize.height * 0.1
+            // make check in audioviewcontroller what that will be showned.. audio or TTS
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            isAudioViewHidden = true
+            audioViewHeight.constant = 0.0
+            // make check in audioviewcontroller what that will be showned.. audio or TTS
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
@@ -281,19 +302,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 for art in paintings.artList {
                     if (art.paintingName == referenceImageName) {
                         if (!globalAudioViewController!.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
-                            print("startTTS: \(globalAudioViewController!.haveTextToSpeechBeenStarted)")
                             globalAudioViewController!.startTextToSpeech(art.infotextEn)
                         } else if (!globalAudioViewController!.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
-                            print("startAudio: \(globalAudioViewController!.haveAudioBeenStarted)")
                             globalAudioViewController!.streamAudio(Url: art.audioUrl)
                         } else {
-                            print("play/pause: \(globalAudioViewController!.haveAudioBeenStarted)")
                             if (art.audioUrl.isEmpty) {
                                 globalAudioViewController!.pauseOrPlayTextToSpeech()
                             } else {
                                 globalAudioViewController!.pauseOrPlayAudio()
                             }
                         }
+                        hideOrShowAudioView()
                     }
                 }
                 break

@@ -28,6 +28,11 @@ class AudioViewController: UIViewController {
     var observer: NSKeyValueObservation?
 
     @IBOutlet weak var audioSlider: UISlider!
+    @IBOutlet weak var playAndPause: UIImageView!
+    @IBOutlet weak var stopButton: UIImageView!
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +47,7 @@ class AudioViewController: UIViewController {
             audioSlider.setThumbImage(image, for: .highlighted)
         }
         audioSlider.value = 0.0
+        audioSlider.isHidden = true
     }
     
     @IBAction func changeAudioTime(_ sender: Any) {
@@ -49,13 +55,13 @@ class AudioViewController: UIViewController {
     }
     
     @objc func playerDidFinishPlaying(note: NSNotification) {
-        print("Video Finished")
         stopAudio()
     }
     
     func startTextToSpeech(_ text: String) {
         if (haveAudioBeenStarted) {
             stopAudio()
+            audioSlider.isHidden = true
         }
         utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
@@ -111,6 +117,7 @@ class AudioViewController: UIViewController {
         if (haveTextToSpeechBeenStarted) {
             stopTextToSpeech()
         }
+        audioSlider.isHidden = false
         
         downloadAudio(url: Url) {
             if let url = self.audioDownloadUrl {
