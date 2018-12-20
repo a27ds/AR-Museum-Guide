@@ -26,9 +26,6 @@ class AudioController {
     var audioDownloadUrl: URL?
     var observer: NSKeyValueObservation?
     
-    
-    
-    
     @objc func playerDidFinishPlaying(note: NSNotification) {
         print("Video Finished")
         stopAudio()
@@ -91,7 +88,11 @@ class AudioController {
         player.pause()
         player = nil
         haveAudioBeenStarted = false
-        globalAudioViewController?.audioSlider.value = 0.0
+        DispatchQueue.main.async {
+            //need to do the change in an dispatchqueue, because the function is called from another thread then the main thread
+            globalAudioViewController?.audioSlider.value = 0.0
+        }
+        
     }
     
     func streamAudio(Url: String) {

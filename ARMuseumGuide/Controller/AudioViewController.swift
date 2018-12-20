@@ -26,8 +26,8 @@ class AudioViewController: UIViewController {
     }
     
     @IBAction func changeAudioTime(_ sender: Any) {
-        globalAudioController?.player.seek(to: CMTimeMakeWithSeconds(Float64(audioSlider.value), preferredTimescale: (globalAudioController?.player.currentItem!.duration.timescale)!)) { [weak self](state) in
+        globalAudioController?.player.seek(to: CMTimeMakeWithSeconds(Float64(audioSlider.value), preferredTimescale: (globalAudioController?.player.currentItem!.duration.timescale)!)) //{ [weak self](state) in
             //do what is relevant to your app on seeing to particular offset
-        }
+//        }
     }
 }
