@@ -56,7 +56,6 @@ class InfoViewController: UIViewController {
             }
         } else {
             isInfoTexthidden = true
-            
             UIView.animate(withDuration: 0.5) {
                 self.infoTextView.alpha = 0.0
                 self.paintingNameLabel.alpha = 0.0

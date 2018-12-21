@@ -34,6 +34,4 @@ class Paintings {
         }
         return nil
     }
-    
 }
-

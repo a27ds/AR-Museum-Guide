@@ -30,7 +30,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     let screenSize = UIScreen.main.bounds
     
-    
     let paintings = Paintings()
     var isInfoViewHidden = true
     var isAudioViewHidden = true
@@ -167,8 +166,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         SVProgressHUD.showSuccess(withStatus: "Imagerecognizer active")
         self.sceneView.session.run(self.configuration)
     }
-    
-    // MARK: - Helpers
     
     func isConnectedToInternet() -> Bool {
         return NetworkReachabilityManager()!.isReachable
