@@ -357,10 +357,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 break
             case "infoPlane":
                 print("infoPlane")
-                for art in paintings.artList {
-                    if (art.paintingName == referenceImageName) {
-                        globalInfoViewController?.setTextInInfoView(paintingName: art.paintingName, artistName: art.artistName, infoText: art.infotextEn)
-                        hideOrShowInfoView()
+                if (isInfoViewHidden) {
+                    for art in paintings.artList {
+                        if (art.paintingName == referenceImageName) {
+                            globalInfoViewController?.setTextInInfoView(paintingName: art.paintingName, artistName: art.artistName, infoText: art.infotextEn)
+                            hideOrShowInfoView()
+                        }
                     }
                 }
                 break
