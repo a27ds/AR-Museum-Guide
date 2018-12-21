@@ -229,11 +229,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 currentPaintingName = art.paintingName
                 if (referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveAudioBeenStarted)!) {
                     DispatchQueue.main.async {
-                    globalAudioViewController?.stopAudio()
+                        globalAudioViewController?.stopAudio()
                     }
                 } else if ( referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveTextToSpeechBeenStarted)!) {
                     DispatchQueue.main.async {
-                    globalAudioViewController?.stopTextToSpeech()
+                        globalAudioViewController?.stopTextToSpeech()
                     }
                 }
                 node.addChildNode(createArtNode(imageAnchor: imageAnchor))
@@ -328,6 +328,37 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         node.eulerAngles.x = -.pi / 2
     }
     
+    func whenArtPlaneGetClicked() {
+        for art in paintings.artList {
+            if (art.paintingName == referenceImageName) {
+                if (!globalAudioViewController!.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
+                    globalAudioViewController!.startTextToSpeech(art.infotextEn)
+                    hideOrShowAudioView()
+                } else if (!globalAudioViewController!.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
+                    globalAudioViewController!.streamAudio(Url: art.audioUrl)
+                    hideOrShowAudioView()
+                } else {
+                    if (art.audioUrl.isEmpty) {
+                        globalAudioViewController!.pauseOrPlayTextToSpeech()
+                    } else {
+                        globalAudioViewController!.pauseOrPlayAudio()
+                    }
+                }
+            }
+        }
+    }
+    
+    func whenInfoPlaneGets() {
+        if (isInfoViewHidden) {
+            for art in paintings.artList {
+                if (art.paintingName == referenceImageName) {
+                    globalInfoViewController?.setTextInInfoView(paintingName: art.paintingName, artistName: art.artistName, infoText: art.infotextEn)
+                    hideOrShowInfoView()
+                }
+            }
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let currentTouchLocation = touches.first?.location(in: self.sceneView),
             let hitTestNode = self.sceneView.hitTest(currentTouchLocation, options: nil).first?.node else { return }
@@ -337,34 +368,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 print("artPlane")
                 break
             case "audioPlane":
-                for art in paintings.artList {
-                    if (art.paintingName == referenceImageName) {
-                        if (!globalAudioViewController!.haveTextToSpeechBeenStarted && art.audioUrl.isEmpty) {
-                            globalAudioViewController!.startTextToSpeech(art.infotextEn)
-                            hideOrShowAudioView()
-                        } else if (!globalAudioViewController!.haveAudioBeenStarted && !art.audioUrl.isEmpty) {
-                            globalAudioViewController!.streamAudio(Url: art.audioUrl)
-                            hideOrShowAudioView()
-                        } else {
-                            if (art.audioUrl.isEmpty) {
-                                globalAudioViewController!.pauseOrPlayTextToSpeech()
-                            } else {
-                                globalAudioViewController!.pauseOrPlayAudio()
-                            }
-                        }
-                    }
-                }
+                whenArtPlaneGetClicked()
                 break
             case "infoPlane":
                 print("infoPlane")
-                if (isInfoViewHidden) {
-                    for art in paintings.artList {
-                        if (art.paintingName == referenceImageName) {
-                            globalInfoViewController?.setTextInInfoView(paintingName: art.paintingName, artistName: art.artistName, infoText: art.infotextEn)
-                            hideOrShowInfoView()
-                        }
-                    }
-                }
+                whenInfoPlaneGets()
                 break
             default:
                 break

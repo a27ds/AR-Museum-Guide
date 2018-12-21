@@ -18,11 +18,11 @@ class Paintings {
     public func UIImageToArImage (imagePath: String, imageName: String, imageWidth: Double) {
         let image = UIImage(contentsOfFile: imagePath)
         let imageToCIImage = CIImage(image: image!)
-        //3. Then Convert The CIImage To A CGImage
+        // Then Convert The CIImage To A CGImage
         let cgImage = self.convertCIImageToCGImage(inputImage: imageToCIImage!)
-        //4. Create An ARReference Image (Remembering Physical Width Is In Metres)
+        // Create An ARReference Image (Remembering Physical Width Is In Metres)
         let arImage = ARReferenceImage(cgImage!, orientation: CGImagePropertyOrientation.up, physicalWidth: CGFloat(imageWidth))
-        //5. Name The Image
+        // Name The Image
         arImage.name = imageName
         arPaintingList.insert(arImage)
     }
