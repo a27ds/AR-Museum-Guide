@@ -12,6 +12,7 @@ import ARKit
 import Firebase
 import AVFoundation
 import Alamofire
+import SVProgressHUD
 
 var globalViewController: ViewController?
 
@@ -34,6 +35,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var isInfoViewHidden = true
     var isAudioViewHidden = true
     var referenceImageName = ""
+    var currentPaintingName = ""
+    var currentArtistName = ""
     var activeNode: SCNNode!
     var lastPaintingThatBeenLoaded: String?
     
@@ -43,8 +46,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkIfInternetAlert()
         globalViewController = self
         NotificationCenter.default.addObserver(self, selector: #selector(updateAudioIconToPlay(_:)), name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateAudioIconToPause(_:)), name: Notification.Name(rawValue: "updateAudioIconToPause"), object: nil)
@@ -99,6 +107,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func hideOrShowInfoView() {
         if (isInfoViewHidden) {
             isInfoViewHidden = false
+            
             infoViewHeight.constant = screenSize.height * 0.7
             globalInfoViewController?.hideOrShowInfoText()
             UIView.animate(withDuration: 0.5) {
@@ -127,6 +136,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func downloadphotos(completion: @escaping () -> Void) {
+        SVProgressHUD.show(withStatus: "Downloading Database")
         DispatchQueue.global(qos: .userInitiated).async {
             let downloadGroup = DispatchGroup()
             for art in self.paintings.artList {
@@ -139,6 +149,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 Alamofire.download(art.imageUrl, to: destination).response { response in
                     if response.error == nil, let imagePath = response.destinationURL?.path {
                         self.paintings.UIImageToArImage(imagePath: imagePath, imageName: art.paintingName, imageWidth: art.width)
+                        
                         downloadGroup.leave()
                     }
                 }
@@ -153,8 +164,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func setAR() {
         configuration.trackingImages = paintings.arPaintingList
         self.configuration.maximumNumberOfTrackedImages = 1
-        print("Images Successfully Added")
+        SVProgressHUD.showSuccess(withStatus: "Imagerecognizer active")
         self.sceneView.session.run(self.configuration)
+    }
+    
+    // MARK: - Helpers
+    
+    func isConnectedToInternet() -> Bool {
+        return NetworkReachabilityManager()!.isReachable
+    }
+    
+    func checkIfInternetAlert() {
+        if isConnectedToInternet() {
+            print("You have the Internetz!")
+        } else {
+            print("Pity the fool!")
+            SVProgressHUD.setMaximumDismissTimeInterval(7)
+            SVProgressHUD.showError(withStatus: "You need to have an active internet connection to use this app")
+            SVProgressHUD.setMaximumDismissTimeInterval(1)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -197,7 +225,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         for art in paintings.artList {
             if (art.paintingName == imageAnchor.referenceImage.name) {
                 referenceImageName = imageAnchor.referenceImage.name!
-                // kolla in buggen här.. när man går från dali till starry night.. == crash
+                currentArtistName = art.artistName
+                currentPaintingName = art.paintingName
                 if (referenceImageName != lastPaintingThatBeenLoaded && (globalAudioViewController?.haveAudioBeenStarted)!) {
                     DispatchQueue.main.async {
                     globalAudioViewController?.stopAudio()

@@ -7,10 +7,9 @@ target 'ARMuseumGuide' do
   use_frameworks!
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
-pod 'Firebase/Firestore'
 pod 'Firebase/Database'
 pod 'Alamofire', '~> 4.7'
-pod 'MBCircularProgressBar'
+pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
   
   # Pods for ARMuseumGuide
 

@@ -167,20 +167,33 @@
                                     <constraint firstAttribute="width" constant="30" id="zAV-WK-UUM"/>
                                 </constraints>
                             </imageView>
+                            <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EQu-pE-IvY">
+                                <rect key="frame" x="96" y="35" width="298" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="ve9-BZ-Lya"/>
+                                </constraints>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.098874639979999998" blue="0.16722366280000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="EQu-pE-IvY" secondAttribute="bottom" constant="15" id="DHK-fx-p86"/>
                             <constraint firstAttribute="bottom" secondItem="mpe-u6-PLy" secondAttribute="bottom" constant="16" id="Euw-9D-3ea"/>
                             <constraint firstAttribute="bottom" secondItem="Yav-LF-IjM" secondAttribute="bottom" constant="15" id="Ey2-kX-Aff"/>
+                            <constraint firstAttribute="trailing" secondItem="EQu-pE-IvY" secondAttribute="trailing" constant="20" id="F59-Z6-fmM"/>
                             <constraint firstItem="mpe-u6-PLy" firstAttribute="leading" secondItem="Yav-LF-IjM" secondAttribute="trailing" constant="8" id="NE5-yI-nao"/>
                             <constraint firstAttribute="trailing" secondItem="mpe-u6-PLy" secondAttribute="trailing" constant="20" id="PCH-D5-71d"/>
                             <constraint firstItem="ImD-Uy-wvP" firstAttribute="leading" secondItem="vB1-xh-Gk6" secondAttribute="leading" constant="20" id="g3F-97-ymE"/>
+                            <constraint firstItem="EQu-pE-IvY" firstAttribute="leading" secondItem="Yav-LF-IjM" secondAttribute="trailing" constant="8" id="gSD-3u-DHQ"/>
                             <constraint firstAttribute="bottom" secondItem="ImD-Uy-wvP" secondAttribute="bottom" constant="15" id="kSy-bj-yeq"/>
                             <constraint firstItem="Yav-LF-IjM" firstAttribute="leading" secondItem="ImD-Uy-wvP" secondAttribute="trailing" constant="8" id="nDx-hY-nLK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8a5-hc-iJa"/>
                     </view>
                     <connections>
+                        <outlet property="audioInfoText" destination="EQu-pE-IvY" id="nTS-fs-Pe1"/>
                         <outlet property="audioSlider" destination="mpe-u6-PLy" id="I3x-te-iNc"/>
                         <outlet property="playAndPause" destination="ImD-Uy-wvP" id="e75-wS-EHL"/>
                         <outlet property="stopButton" destination="Yav-LF-IjM" id="aI3-C6-9Hs"/>

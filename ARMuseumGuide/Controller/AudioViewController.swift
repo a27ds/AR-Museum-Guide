@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import Alamofire
+import SVProgressHUD
 
 var globalAudioViewController: AudioViewController?
 
@@ -30,6 +31,7 @@ class AudioViewController: UIViewController {
     @IBOutlet weak var audioSlider: UISlider!
     @IBOutlet weak var playAndPause: UIImageView!
     @IBOutlet weak var stopButton: UIImageView!
+    @IBOutlet weak var audioInfoText: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,11 +75,30 @@ class AudioViewController: UIViewController {
     }
     
     @IBAction func changeAudioTime(_ sender: Any) {
-        player.seek(to: CMTimeMakeWithSeconds(Float64(audioSlider.value), preferredTimescale: (player.currentItem!.duration.timescale)))
+        // if audio not playing can't scrubb
+        if (haveAudioBeenStarted) {
+            player.seek(to: CMTimeMakeWithSeconds(Float64(audioSlider.value), preferredTimescale: (player.currentItem!.duration.timescale)))
+        }
     }
     
     @objc func playerDidFinishPlaying(note: NSNotification) {
         stopAudio()
+    }
+    
+    func setTextInAudioInfoText(_ shouldSetText: Bool) {
+        if (shouldSetText) {
+            if let artist = globalViewController?.currentArtistName {
+                if let painting = globalViewController?.currentPaintingName {
+                    audioInfoText.text = "\(painting) - \(artist)"
+                    audioInfoText.isHidden = false
+                }
+            } else {
+                audioInfoText.text = "Error getting Art info"
+            }
+            
+        } else {
+            audioInfoText.isHidden = true
+        }
     }
     
     func startTextToSpeech(_ text: String) {
@@ -85,6 +106,7 @@ class AudioViewController: UIViewController {
             stopAudio()
             audioSlider.isHidden = true
         }
+        
         utterance = AVSpeechUtterance(string: text)
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         synth.speak(utterance)
@@ -92,6 +114,7 @@ class AudioViewController: UIViewController {
         changePlayIconInAudioViewToPause(true)
         isTextToSpeechPaused = false
         haveTextToSpeechBeenStarted = true
+        setTextInAudioInfoText(true)
     }
     
     func stopTextToSpeech() {
@@ -100,6 +123,7 @@ class AudioViewController: UIViewController {
         changePlayIconInAudioViewToPause(false)
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
         globalViewController?.hideOrShowAudioView()
+        setTextInAudioInfoText(false)
     }
     
     func pauseOrPlayTextToSpeech() {
@@ -139,6 +163,7 @@ class AudioViewController: UIViewController {
         player = nil
         globalViewController?.hideOrShowAudioView()
         haveAudioBeenStarted = false
+        audioSlider.isHidden = true
         NotificationCenter.default.post(name: Notification.Name(rawValue: "updateAudioIconToPlay"), object: nil)
         DispatchQueue.main.async {
             //need to do the change in an dispatchqueue, because the function is called from another thread then the main thread
@@ -209,6 +234,7 @@ class AudioViewController: UIViewController {
     }
     
     func downloadAudio(url: String, completion: @escaping () -> Void) {
+        SVProgressHUD.show(withStatus: "Downloading Audio")
         DispatchQueue.global(qos: .userInitiated).async {
             let downloadGroup = DispatchGroup()
             downloadGroup.enter()
@@ -221,6 +247,7 @@ class AudioViewController: UIViewController {
                 if response.error == nil {
                     if let dataUrl = response.destinationURL {
                         self.audioDownloadUrl = dataUrl
+                        SVProgressHUD.showSuccess(withStatus: "Download complete!")
                     }
                     downloadGroup.leave()
                 }
